@@ -12,7 +12,7 @@ def function(state, district, age, weeks):
     enddate = currdate + datetime.timedelta(days=30)
     state = state.lower()
     states = requests.get('https://cdn-api.co-vin.in/api/v2/admin/location/states').json()
-    # print(states['states'])
+    # print(states['states'][0])
 
     stateID = [x['state_id'] for x in states['states'] if x['state_name'].lower() ==state]
     if len(stateID)!=1:
