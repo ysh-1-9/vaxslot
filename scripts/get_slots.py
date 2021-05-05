@@ -11,23 +11,22 @@ def get_slot(state, district, age, weeks=8):
     currdate = datetime.datetime.now()
     enddate = currdate + datetime.timedelta(days=30)
     state = state.lower()
-    states = {'states': [{'state_id': 1, 'state_name': 'Andaman and Nicobar Islands'}, {'state_id': 2, 'state_name': 'Andhra Pradesh'}, {'state_id': 3, 'state_name': 'Arunachal Pradesh'}, {'state_id': 4, 'state_name': 'Assam'}, {'state_id': 5, 'state_name': 'Bihar'}, {'state_id': 6, 'state_name': 'Chandigarh'}, {'state_id': 7, 'state_name': 'Chhattisgarh'}, {'state_id': 8, 'state_name': 'Dadra and Nagar Haveli'}, {'state_id': 37, 'state_name': 'Daman and Diu'}, {'state_id': 9, 'state_name': 'Delhi'}, {'state_id': 10, 'state_name': 'Goa'}, {'state_id': 11, 'state_name': 'Gujarat'}, {'state_id': 12, 'state_name': 'Haryana'}, {'state_id': 13, 'state_name': 'Himachal Pradesh'}, {'state_id': 14, 'state_name': 'Jammu and Kashmir'}, {'state_id': 15, 'state_name': 'Jharkhand'}, {'state_id': 16, 'state_name': 'Karnataka'}, {'state_id': 17, 'state_name': 'Kerala'}, {'state_id': 18, 'state_name': 'Ladakh'}, {'state_id': 19, 'state_name': 'Lakshadweep'}, {'state_id': 20, 'state_name': 'Madhya Pradesh'}, {'state_id': 21, 'state_name': 'Maharashtra'}, {'state_id': 22, 'state_name': 'Manipur'}, {'state_id': 23, 'state_name': 'Meghalaya'}, {'state_id': 24, 'state_name': 'Mizoram'}, {'state_id': 25, 'state_name': 'Nagaland'}, {'state_id': 26, 'state_name': 'Odisha'}, {'state_id': 27, 'state_name': 'Puducherry'}, {'state_id': 28, 'state_name': 'Punjab'}, {'state_id': 29, 'state_name': 'Rajasthan'}, {'state_id': 30, 'state_name': 'Sikkim'}, {'state_id': 31, 'state_name': 'Tamil Nadu'}, {'state_id': 32, 'state_name': 'Telangana'}, {'state_id': 33, 'state_name': 'Tripura'}, {'state_id': 34, 'state_name': 'Uttar Pradesh'}, {'state_id': 35, 'state_name': 'Uttarakhand'}, {'state_id': 36, 'state_name': 'West Bengal'}], 'ttl': 24}
-    
+    states = requests.get('https://cdn-api.co-vin.in/api/v2/admin/location/states').json()
+    # print(states['states'][0])
+
     stateID = [x['state_id'] for x in states['states'] if x['state_name'].lower() ==state]
     if len(stateID)!=1:
         # print('Too many or too few matching states')
-        return (False, None)
+        return (False, [])
     else:
         stateID = stateID[0]
-
 
     districts = requests.get('https://cdn-api.co-vin.in/api/v2/admin/location/districts/'+str(stateID)).json()
 
     districtID = [x['district_id'] for x in districts['districts'] if x['district_name'].lower() == district]
     if len(districtID)!=1:
-        return (False, None)
         # print('Too many or too few matching districts')
-        return
+        return (False, [])
     else:
         districtID = districtID[0]
 
@@ -44,8 +43,45 @@ def get_slot(state, district, age, weeks=8):
             return (True, slots)
             # print('Slot Available')
     if len(slots)==0:
+        # print('No slots Available')
         return (False, None)
+        
+        
+        
+# [{'emailID':'adityaranjha786@gmail.com','state':'west bengal','district':'kolkata', 'age': 18},{....},{....}]
 
+# {'andhra pradesh':{'kalimpondi': [usr1,usr2...], 'machu pichu': [usr3, usr4...]} }
+
+def updateDB():
+    # get states and districts possibly locally
+    # look through the current database of (districtID,age) -> [list of centers with availability within next 12 weeks]
+    # for every state,district,age, query the cowin thing and update to a local variable
+    # go through the new db. if the session was there before and numbers same, dont do anything. if the numbers changes, save it to a changedDB. if it wasnt there before, save it to a newlyaddedDB.
+    # finally update the on disk db to the new db.
+    pass
+
+def notify():
+    # go through the users in the (districtID,age)->list of users for every districtID and age
+    #  for each districtID,age come up with 3 things - a> email in general likhna hai?, b> updates kya kya dene hai and c> newadditions kya kya batane hai
+    # then for each districtID send (or don't) the respective email to all users from that category
+    pass
+
+
+def createEmail(updates,additions):
+    # returns a parsed sexy ass email object ya whatever
+    pass
+
+def addUser(emailID, state, district, age):
+    # create an email about ALL available stuff as additions, w some welcome bs
+    # send email
+    # save user to functional database
+    # save user to permanent database
+    pass
+
+def deleteUser(emailID):
+    # remove user from functional database
+    # send bullshit liberal email
+    pass
 
 
 # get_slot('west bengal','kolkata', 45, 8)
