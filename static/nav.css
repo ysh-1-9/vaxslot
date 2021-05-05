@@ -1,0 +1,46 @@
+* {
+    font-family: sans-serif;
+}
+
+.nav {
+    display: flex;
+    /* border: 2px solid black; */
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    font-size: small;
+    align-items: center;
+}
+
+.headnav {
+    font-size: xxx-large;
+}
+
+
+.nav>a {
+    margin: 1vh 1vh;
+    text-decoration: none;
+    color: #202124;
+}
+
+.nav>a:hover {
+    text-decoration: none;
+}
+
+.right>a{
+    margin-right: 10px;
+    text-decoration: none;
+    color: #202124;
+}
+.right>a:hover{
+    text-decoration: underline;
+}
+
+@font-face {
+    font-family: didot;
+    src: url(fonts/didot-htf-m96-medium.ttf);
+    }
+
+.head {
+    font-family: didot;
+}
+

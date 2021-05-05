@@ -1,2 +1,2 @@
 # VaxSlot
-vaccine availability notification bot
+Vaccine availability notification bot

@@ -1,149 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "layout.html" %}
 
-<head>
-    <title>Search</title>
+{% block style %}
 
-    <style>
-        * {
-            font-family: sans-serif;
-        }
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 
-        .container {
-            height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            /* border: 2px solid black; */
-        }
+{% endblock style %}
 
-        .main {
-            display: flex;
-            width: fit-content;
-            /* border: 2px solid black; */
-        }
-
-        input[type=text] {
-            box-sizing: border-box;
-            display: block;
-            margin: auto;
-            /* border: 2px solid black; */
-            height: 37px;
-            width: 300px;
-            border: 1px solid rgb(218, 218, 218);
-            border-radius: 20px;
-            padding-left: 40px;
-            margin: 10px;
-            
-        }
-
-        input[type=text]:hover {
-            box-shadow: 1px 1px 5px rgb(218, 218, 218);
-
-        }
-
-        input {
-            outline: none;
-        }
-
-
-        input[type=submit] {
-            display: block;
-            margin: 30px auto;
-            height: 36px;
-            min-width: 54px;
-            background-color: #f8f9fa;
-            color: #3c4043;
-            font-size: 14px;
-            cursor: pointer;
-            padding: 0 16px;
-            border: 1px solid #f8f9fa;
-            border-radius: 4px;
-            
-        }
-        input[type=submit]:hover {
-            box-shadow: 1px 1px 10px -2px silver;
-        }
-
-        .nav {
-            display: flex;
-            /* border: 2px solid black; */
-            flex-direction: row-reverse;
-            justify-content: space-between;
-            font-size: small;
-            align-items: center;
-        }
-
-        .headnav {
-            font-size: xxx-large;
-        }
-        
-
-        .nav>a {
-            margin: 1vh 1vh;
-            text-decoration: none;
-            color: #202124;
-        }
-
-        .nav>a:hover {
-            text-decoration: none;
-        }
-
-        .right>a{
-            text-decoration: none;
-            color: #202124;
-        }
-        .right>a:hover{
-            text-decoration: underline;
-        }
-        .logo { 
-            /* border: 2px solid black; */
-            height: 92px;
-            width: 272px;
-            margin-bottom: 35px;
-        }
-        
-        @font-face {
-            font-family: didot;
-            src: url(fonts/didot-htf-m96-medium.ttf);
-        }
-        .head {
-            font-family: didot
-        }
-
-
-        .grey{
-            font-size: x-small;
-            color: #3c3e41;
-        }
-        
-    </style>
-</head>
-
-<body>
-    <div class="nav">
-        <div class="right">
-            <a href="https://www.cowin.gov.in/home" target="_blank" class='right'>Official CoVin portal</a>
-        </div>
-        <a href="main.html" class='head headnav'>VaxSlot</a>
-    </div>
+{% block content %}
+    
     <div class=container>
         <h4 class='search_head'>
             Enter your e-mail address, phone number and location
         </h4>
-        <!-- <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" class=logo alt=""> -->
         <div class="main">
-            <form action="https://www.google.com/search">
-                <input type="text" name="state">
-                <!-- <input type="text" name="q"> -->
-                <input type="submit" value="Search">
+            <form name="mainform" action="" method="POST" >
+                {{ form.hidden_tag() }}
+                <div class="form_full">
+                    <!-- {% if form.email.errors %}
+                        {{ form.email(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.username.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+
+                    {% endif %} -->
+                    {{ form.email }}
+                </div>
+                <div class="form_full">
+                    <!-- {% if form.number.errors %}
+                        {{ form.number(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.number.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+
+                    {% endif %} -->
+                    {{ form.number }}
+                </div>
+                <div class="form_half">
+                    {{ form.state }}
+                    {{ form.district }}
+                </div>
+                <div class="form_full">
+                    {{ form.age }}
+                </div>
+                <div class="submit">
+                    {{ form.submit }}
+                </div>
             </form>
         </div>
         <p class="grey">
-            You'll get a mail and an text alerting you about availabilty of slots
+            You'll get a mail and a text alerting you about availabilty of slots
         </p>
     </div>
-</body>
 
-</html>
+
+{% endblock content %}
