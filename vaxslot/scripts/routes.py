@@ -1,6 +1,7 @@
 from flask import render_template, session, request, url_for, flash, redirect
 from vaxslot import app
 from vaxslot.scripts.forms import Registration
+from vaxslot.scripts.get_slots import get_slot
 from vaxslot.scripts.models import Data
 
 from vaxslot.scripts.common import cache
@@ -22,8 +23,10 @@ def home():
 
         print(st, dist, age)
         if(get_slot(st, dist, age)[0]):
+            #register
             flash("You have been succesfully registered.\nSlots are available now.\nVisit the CoWin Portal to register.", 'success')
         else:
+            #register
             flash("You have been succesfully registered.")
         if(flag):
             flashes = session.pop("_flashes", None)
@@ -39,8 +42,8 @@ def home():
         data.district = form.district.data
         data.number = form.number.data
         data.age = form.age.data
-        db.session.add(data)
-        db.session.commit()
+        # db.session.add(data)
+        # db.session.commit()
         print("Details have been added.")
     
     return render_template('main.html', form=form, flag=flag)

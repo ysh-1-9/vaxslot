@@ -2,6 +2,8 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, IntegerField
 from wtforms.validators import DataRequired, Length, Email
 
+# give the user a list of districts to choose from
+
 state_choices = [( 'andaman and nicobar islands', 'Andaman and Nicobar Islands'), 
                 ( 'andhra pradesh', 'Andhra Pradesh'), 
                 ( 'arunachal pradesh', 'Arunachal Pradesh'), 
