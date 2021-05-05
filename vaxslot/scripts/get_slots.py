@@ -6,31 +6,25 @@
 import requests
 import datetime
 
+def getStates():
+    return requests.get('https://cdn-api.co-vin.in/api/v2/admin/location/states').json()
 
-def get_slot(state, district, age, weeks=8):
+def getStateIDs():
+    states = getStates()
+    return [x['state_id'] for x in states['states']]
+
+def getDistricts(stateID):
+    return requests.get('https://cdn-api.co-vin.in/api/v2/admin/location/districts/'+str(stateID)).json()
+
+def getDistrictIDs(stateID):
+    districts = getDistricts(stateID)
+    districtID = [x['district_id'] for x in districts['districts']]
+    
+
+
+def get_slot(districtID, age, weeks=8):
     currdate = datetime.datetime.now()
     enddate = currdate + datetime.timedelta(days=30)
-    state = state.lower()
-    states = requests.get('https://cdn-api.co-vin.in/api/v2/admin/location/states').json()
-    # print(states['states'][0])
-
-    stateID = [x['state_id'] for x in states['states'] if x['state_name'].lower() ==state]
-    if len(stateID)!=1:
-        # print('Too many or too few matching states')
-        return (False, [])
-    else:
-        stateID = stateID[0]
-
-    districts = requests.get('https://cdn-api.co-vin.in/api/v2/admin/location/districts/'+str(stateID)).json()
-
-    districtID = [x['district_id'] for x in districts['districts'] if x['district_name'].lower() == district]
-    if len(districtID)!=1:
-        # print('Too many or too few matching districts')
-        return (False, [])
-    else:
-        districtID = districtID[0]
-
-    distindex = 1+districtID-districts['districts'][0]['district_id']
     slots=[]
     for i in range(weeks):
         datestr = (currdate+datetime.timedelta(weeks=i)).strftime('%d-%m-%Y')
@@ -44,8 +38,7 @@ def get_slot(state, district, age, weeks=8):
             # print('Slot Available')
     if len(slots)==0:
         # print('No slots Available')
-        return (False, None)
-        
+        return (False, None)        
         
         
 # [{'emailID':'adityaranjha786@gmail.com','state':'west bengal','district':'kolkata', 'age': 18},{....},{....}]
