@@ -6,6 +6,8 @@ import sqlalchemy
 
 from vaxslot import db
 
+from string import Template
+
 import requests
 import datetime
 import sqlite3
@@ -121,8 +123,27 @@ def notify():
 
 
 def createEmail(updates, additions):
-    # returns a parsed sexy ass email object ya whatever
-    pass
+    def read_template(filename):
+       with open(filename, 'r', encoding='utf-8') as template_file:
+           template_file_content = template_file.read()
+       return Template(template_file_content)
+
+    email_dict = {}  
+    message = read_template(messages.txt)
+    for x in updates:
+        mess = message
+        if x.centerID in centerdeets:
+            mess = mess.substitute(NUMBER_OF_SLOTS=str(x.currCap), AGE = str(x.age), CENTER_DETAILS =  centerdeets[x.centerID])
+            email_dict[x.centerID] = mess
+        
+    for x in additions:
+        mess = message
+        if x.centerID in centerdeets:
+            mess = mess.substitute(NUMBER_OF_SLOTS=str(x.currCap), AGE = str(x.age), CENTER_DETAILS =  centerdeets[x.centerID])
+            email_dict[x.centerID] = mess
+
+        
+    return email_dict
 
 
 

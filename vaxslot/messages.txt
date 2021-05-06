@@ -1,0 +1,11 @@
+Dear ${PERSON_NAME},
+
+Vaccination slot availability:
+
+${NUMBER_OF_SLOTS} available for ${AGE}.
+Center Details: ${CENTER_DETAILS}.
+
+Register Now!!!
+
+Yours Truly,
+VaxSlott
