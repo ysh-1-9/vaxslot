@@ -2,8 +2,12 @@ Dear ${PERSON_NAME},
 
 Vaccination slot availability:
 
+New Slots Available, Register Now!
+
 ${NUMBER_OF_SLOTS} available for ${AGE}.
-Center Details: ${CENTER_DETAILS}.
+Date: ${AVAILABILITY_DATE}
+Available Centers:
+${CENTER_AVAILABILITY}
 
 Register Now!!!
 
