@@ -20,10 +20,8 @@ class Center(db.Model):
     def __init__(self, center,**kwargs):
         super(Center,self).__init__(**kwargs)
         self.id = center['center_id']
-        self.name = center['name'] + ' ' + center['name_l']
-        self.address = center['address'] + center['address_l'] + center['block_name'] + center['block_name_l'] + center[
-            'district_name'] + center['district_name_l'] + center['state_name'] + center['state_name_l'] + center[
-                           'pincode']
+        self.name = center['name'] + ' ' + center.get('name_l','')
+        self.address = center.get('address','') + center.get('address_l','') + center.get('block_name','') + center.get('block_name_l','') + center.get('district_name','') + center.get('district_name_l','') + center.get('state_name','') + center.get('state_name_l','') + str(center.get('pincode',''))
 
 class sesh(db.Model):
     id = db.Column(db.String(50), primary_key=True)
@@ -37,7 +35,7 @@ class sesh(db.Model):
     # abhi not saving slot time details, can add later.
 
     def __init__(self,session, districtID, centerID,**kwargs):
-        super(session,self).__init__(**kwargs)
+        super(sesh,self).__init__(**kwargs)
         self.id = session['session_id']
         self.date = session['date']
         self.currCap = session['available_capacity']

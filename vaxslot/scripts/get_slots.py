@@ -24,13 +24,14 @@ def getStateIDs():
 
 
 def getDistricts(stateID):
-    return requests.get('https://cdn-api.co-vin.in/api/v2/admin/location/districts/' + str(stateID),headers=header).json()
+    return requests.get('https://cdn-api.co-vin.in/api/v2/admin/location/districts/' + str(stateID),headers=header).json()['districts']
 
 
-def getDistrictIDs(stateID):
-    districts = getDistricts(stateID)
-    districtIDs = [x['district_id'] for x in districts['districts']]
-    return districtIDs
+def getDistrictIDs():
+    with open('your_file.txt') as f:
+        lines = f.read().splitlines()
+    lines = [int(x) for x in lines]
+    return lines
 
 
 def get_slot(districtID, weeks=8):                         #all sessions with available space
