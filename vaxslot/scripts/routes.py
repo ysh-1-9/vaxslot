@@ -2,7 +2,7 @@ from flask import render_template, session, request, url_for, flash, redirect
 from vaxslot import app
 from vaxslot.scripts.forms import Registration
 from vaxslot.scripts.get_slots import get_slot
-from vaxslot.scripts.models import Data
+from vaxslot.scripts.models import User
 
 from vaxslot.scripts.common import cache
 
@@ -35,7 +35,7 @@ def home():
             flag = 1
     cache.set("flag", flag)
 
-    data = Data()
+    data = User()
     if(request.method=='POST'):
         data.email = form.email.data
         data.state = form.state.data

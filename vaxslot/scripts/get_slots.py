@@ -2,53 +2,73 @@
 # import scrapy
 # from scrapy.spiders import SitemapSpider
 # import pandas as pd
+import sqlalchemy
+
+from vaxslot import db
 
 import requests
 import datetime
 import sqlite3
 
+from vaxslot.scripts.models import Center, sesh
+
+header = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 
 def getStates():
-    return requests.get('https://cdn-api.co-vin.in/api/v2/admin/location/states').json()
+    return requests.get('https://cdn-api.co-vin.in/api/v2/admin/location/states',headers=header ).json()
+
 
 def getStateIDs():
     states = getStates()
     return [x['state_id'] for x in states['states']]
 
+
 def getDistricts(stateID):
-    return requests.get('https://cdn-api.co-vin.in/api/v2/admin/location/districts/'+str(stateID)).json()
+    return requests.get('https://cdn-api.co-vin.in/api/v2/admin/location/districts/' + str(stateID),headers=header).json()
+
 
 def getDistrictIDs(stateID):
     districts = getDistricts(stateID)
-    districtID = [x['district_id'] for x in districts['districts']]
-    
+    districtIDs = [x['district_id'] for x in districts['districts']]
+    return districtIDs
 
 
-def get_slot(districtID, age, weeks=8):
+def get_slot(districtID, weeks=8):                         #all sessions with available space
     currdate = datetime.datetime.now()
     enddate = currdate + datetime.timedelta(days=30)
-    slots=[]
+    sessions18 = {}
+    sessions45={}
+    centers=[]
     for i in range(weeks):
-        datestr = (currdate+datetime.timedelta(weeks=i)).strftime('%d-%m-%Y')
-        slot7 = requests.get('https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id='+str(districtID)+'&date='+datestr).json()
-        slot7_age = [ x for x in slot7['centers'] if sum((1 if y['min_age_limit']<=age else 0) for y in x['sessions'])>0]
-        slot7_age_available = [x for x in slot7_age if sum(y['available_capacity'] for y in x['sessions'])>0]
-        if len(slot7_age_available)>0:
-            # print(slot7_age_available)
-            slots+= slot7_age_available
-            return (True, slots)
-            # print('Slot Available')
-    if len(slots)==0:
+        datestr = (currdate + datetime.timedelta(weeks=i)).strftime('%d-%m-%Y')
+        slot7 = requests.get(
+            'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=' + str(
+                districtID) + '&date=' + datestr,headers=header).json()
+        # slot7_age = [x for x in slot7['centers'] if
+        #              sum((1 if y['min_age_limit'] <= age else 0) for y in x['sessions']) > 0]
+        # slot7_age_available = [x for x in slot7_age if sum(y['available_capacity'] for y in x['sessions']) > 0]
+        for x in slot7['centers']:
+            centers.append(Center(x))
+            for y in x['sessions']:
+                if y['available_capacity']>0:
+                    if y['min_age_limit']==18:
+                        sessions18.append(sesh(y, districtID, x['center_id']))
+                    else:
+                        sessions45.append(sesh(y, districtID, x['center_id']))
+
+    if len(sessions18) + len(sessions45) == 0:
         # print('No slots Available')
-        return (False, None)        
-        
-        
-# [{'emailID':'adityaranjha786@gmail.com','state':'west bengal','district':'kolkata', 'age': 18},{....},{....}]
+        return (False, None,None,None)
+    else:
+        return(True,sessions18,sessions45,centers)
+
+    # [{'emailID':'adityaranjha786@gmail.com','state':'west bengal','district':'kolkata', 'age': 18},{....},{....}]
+
 
 # {'andhra pradesh':{'kalimpondi': [usr1,usr2...], 'machu pichu': [usr3, usr4...]} }
 
-#get_slots returns a list of centers
-# each center is a dict of the format:
+# get_slots returns a boolean, 2 lists of session objects and a list of Center objects
+# each center from cowin API is a dict of the format:
 
 # {
 #       "center_id": 1234,
@@ -86,39 +106,11 @@ def get_slot(districtID, age, weeks=8):
 #       ]
 #     }
 
-# instead if i return 3 things:
-# ek toh list of sessionID, available cap
-# dusra a dictionary from sessionID to centerID
-# teesra a centreID to center details ka pura dict
-
-
-# ek datadase mein index by district, age, list of session ids and available capacities ->allsh
-# ek database mein index by district, age, list of session ids that changed availability -> updsh
-#  ek database mein index by district, age, list of session ids that werent available before but are now ->newsh
-# ek database will take session id and give me all the centreID->centresh
-# ek database will take centreID and give me center ke poore details.
-
-def updateDB():
-    # get states and districts possibly locally
-    # look through the current database of (districtID,age) -> [list of centers with availability within next 12 weeks]
-    # for every state,district,age, query the cowin thing and update to a local variable
-    # go through the new db. if the session was there before and numbers same, dont do anything. if the numbers changes, save it to a changedDB. if it wasnt there before, save it to a newlyaddedDB.
-    # finally update the on disk db to the new db.
-    connslots = sqlite3.connect('slots.db')
-    connupdates = sqlite3.connect('updates.db')
-    connnews = sqlite3.connect('news.db')
-
-    stateIDs = getStateIDs()
-    districts = sum(getDistricts(x) for x in stateIDs)
-    slots={}
-    for districtID in districts:
-        slots[districtID]=[]
-        for age in {18,45}:
-            slots[districtID].append(get_slot(districtID,age))
+# ek db will have session objects - done
+# ek database will take centreID and give me center ke poore details.  - done
 
 
 
-    pass
 
 def notify():
     # go through the users in the (districtID,age)->list of users for every districtID and age
@@ -127,24 +119,13 @@ def notify():
     pass
 
 
-def createEmail(updates,additions):
+def createEmail(updates, additions):
     # returns a parsed sexy ass email object ya whatever
     pass
 
-def addUser(emailID, state, district, age):
-    # create an email about ALL available stuff as additions, w some welcome bs
-    # send email
-    # save user to functional database
-    # save user to permanent database
-    pass
+
 
 def deleteUser(emailID):
     # remove user from functional database
     # send bullshit liberal email
     pass
-
-
-get_slot(710, 45, 8)
-
-
-
