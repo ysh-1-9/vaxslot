@@ -146,27 +146,18 @@ def notify():
 
 
 def createEmail(updates, additions, centerdict):
-    def read_template(filename):
-       with open(filename, 'r', encoding='utf-8') as template_file:
-           template_file_content = template_file.read()
-       return Template(template_file_content)
-
-    email_dict = {}  
-    message = read_template('messages.txt')
+     s =""
     for x in updates:
-        mess = message
-        if x.centerID in centerdict:
-            mess = mess.substitute(NUMBER_OF_SLOTS=str(x.currCap), AGE = str(x.age), CENTER_DETAILS =  centerdict[x.centerID])
-            email_dict[x.centerID] = mess
+        if x.centerID in centerdeets:
+             s +=  "<tr>" + "<td>" + x.currCap + "</td>" + "<td>" + x.date + "</td>" + "<td>" + x.age + "</td>" + "<td>" + centerdeets[x.centerID].name + "</td>" + "<td>" + centerdeets[x.centerID].address+ "</td>" + "</tr>" 
+
         
     for x in additions:
-        mess = message
-        if x.centerID in centerdict:
-            mess = mess.substitute(NUMBER_OF_SLOTS=str(x.currCap), AGE = str(x.age), CENTER_DETAILS =  centerdict[x.centerID])
-            email_dict[x.centerID] = mess
+        if x.centerID in centerdeets:
+            s +=  "<tr>" + "<td>" + x.currCap + "</td>" + "<td>" + x.date + "</td>" + "<td>" + x.age + "</td>" + "<td>" + centerdeets[x.centerID].name + "</td>" + "<td>" + centerdeets[x.centerID].address+ "</td>" + "</tr>" 
 
         
-    return email_dict
+    return s
 
 
 
