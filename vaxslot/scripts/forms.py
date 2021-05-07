@@ -45,8 +45,8 @@ state_choices = [( 'andaman and nicobar islands', 'Andaman and Nicobar Islands')
 
 class Registration(FlaskForm):
     email = StringField('email', validators=[DataRequired(), Email()], render_kw={"placeholder":"E-Mail"})
-    state = SelectField(choices=state_choices, validators=[DataRequired()], render_kw={"placeholder":"State"})
-    district = StringField('district', validators=[DataRequired()], render_kw={"placeholder":"District"})
+    state = SelectField('state', choices=state_choices, validators=[DataRequired()], render_kw={"placeholder":"State"})
+    district = SelectField('district', choices=[], validators=[DataRequired()], render_kw={"placeholder":"District"})
     age = IntegerField('age', validators=[DataRequired()], render_kw={"placeholder":"Age"})
     number = StringField('number', validators=[DataRequired(), Length(min=10, max=13)], render_kw={"placeholder":"Phone No."})
     submit = SubmitField('Submit')
