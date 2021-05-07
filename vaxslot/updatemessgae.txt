@@ -1,6 +1,6 @@
 Dear ${PERSON_NAME},
 
-Vaccination slot availability:
+Vaccination slot updates:
 
 New Slots Available, Register Now!
 
@@ -9,7 +9,7 @@ Date: ${AVAILABILITY_DATE}
 Available Centers:
 ${CENTER_AVAILABILITY}
 
-Register Now!!!
+Register Now!!! 
 
 Yours Truly,
 VaxSlott
