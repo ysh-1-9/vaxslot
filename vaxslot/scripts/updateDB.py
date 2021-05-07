@@ -3,7 +3,7 @@ import itertools
 
 import requests
 import time
-from vaxslot import db
+from vaxslot import db, db_data, initialize
 from vaxslot.scripts.get_slots import getStateIDs, getDistrictIDs, get_slot, getStates, header
 from vaxslot.scripts.models import *
 
@@ -49,36 +49,42 @@ def test_get_slot(districtID,weeks=1):
 def updateDB():
     # updates the available sessions table in db
     # updates the centers table in db
-
-    districts = getDistrictIDs()
-    slots = {}
-    prevavails18 = sesh.query.filter_by(age=18)
-    prevavails45 = sesh.query.filter_by(age=45)
-    old18sessions = {x.id:x for x in prevavails18}
-    old45sessions = {x.id:x for x in prevavails45}
+    start = time.time()
+    districts = getDistrictIDs(0,346)
     finalsessions18 = []
     finalsessions45 = []
     finalcenters =[]
     # file1 = open('center_counts.txt', 'w')
     # sum=0
+    i=1
     for districtID in districts:
-        available,sessions18,sessions45,centers = test_get_slot(districtID)
+        print('Doing ',i,'th district')
+        available,sessions18,sessions45,centers = get_slot(districtID)
         # size = len(centers)
         # sum+=size
         # print(str(districtID)+': '+str(size))
         # file1.write(str(districtID)+' '+str(size)+'\n')
         for x in sessions18:
-            x.prevCap = old18sessions.get(x.id,x).prevCap
+            x.prevCap = db_data[districtID][0].get(x.id,x).prevCap
         for x in sessions45:
-            x.prevCap = old45sessions.get(x.id,x).prevCap
+            x.prevCap = db_data[districtID][1].get(x.id,x).prevCap
         finalsessions18+=sessions18
         finalsessions45+=sessions45
         finalcenters+=centers
+        db_data[districtID][0] = {x.id: x for x in sessions18}
+        db_data[districtID][1] = {x.id: x for x in sessions45}
+        db_data[districtID][2] = {x.id: x for x in centers}
+        print('Done ', i, 'th district')
+        i+=1
     # file1.close
     sesh.query.delete()
+    Center.query.delete()
     db.session.add_all(finalsessions18)
     db.session.add_all(finalsessions45)
     db.session.add_all(finalcenters)
     db.session.commit()
+    stri = "%s seconds" % (time.time() - start)
+    print('Took ',stri)
 
+initialize()
 updateDB()

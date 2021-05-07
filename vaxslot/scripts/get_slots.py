@@ -2,6 +2,8 @@
 # import scrapy
 # from scrapy.spiders import SitemapSpider
 # import pandas as pd
+import time
+
 import sqlalchemy
 
 from vaxslot import db
@@ -29,28 +31,49 @@ def getDistricts(stateID):
     return requests.get('https://cdn-api.co-vin.in/api/v2/admin/location/districts/' + str(stateID),headers=header).json()['districts']
 
 
-def getDistrictIDs():
-    with open('your_file.txt') as f:
+def getDistrictIDs(start=0,finish=757):          #start inclusive, finish excluded, 0 indexed
+    with open('districts.txt') as f:
         lines = f.read().splitlines()
     lines = [int(x) for x in lines]
+    lines = lines[start:finish]
     return lines
 
 
-def get_slot(districtID, weeks=8):                         #all sessions with available space
+def get_slot(districtID, weeks=1):                         #all sessions with available space
     currdate = datetime.datetime.now()
     enddate = currdate + datetime.timedelta(days=30)
-    sessions18 = {}
-    sessions45={}
+    sessions18 = []
+    sessions45=[]
     centers=[]
     for i in range(weeks):
         datestr = (currdate + datetime.timedelta(weeks=i)).strftime('%d-%m-%Y')
         slot7 = requests.get(
             'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=' + str(
-                districtID) + '&date=' + datestr,headers=header).json()
+                districtID) + '&date=' + datestr,headers=header)
+        try:
+            slot7=slot7.json()
+        except:
+            print('Sleeping......')
+            time.sleep(300)
+            print('Awake')
+            while(True):
+                try:
+                    slot7 = requests.get(
+                        'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=' + str(
+                            districtID) + '&date=' + datestr, headers=header).json()
+                    break
+                except:
+                    time.sleep(15)
         # slot7_age = [x for x in slot7['centers'] if
         #              sum((1 if y['min_age_limit'] <= age else 0) for y in x['sessions']) > 0]
         # slot7_age_available = [x for x in slot7_age if sum(y['available_capacity'] for y in x['sessions']) > 0]
+        # centerdict={}
         for x in slot7['centers']:
+            # if x['center_id'] in centerdict:
+            #     print('Duplicate centers at district ',districtID,' with ID', x['center_id'])
+            #     exit()
+            # else:
+            #     centerdict[x['center_id']] = x
             centers.append(Center(x))
             for y in x['sessions']:
                 if y['available_capacity']>0:
@@ -61,7 +84,7 @@ def get_slot(districtID, weeks=8):                         #all sessions with av
 
     if len(sessions18) + len(sessions45) == 0:
         # print('No slots Available')
-        return (False, None,None,None)
+        return (False, sessions18,sessions45,centers)
     else:
         return(True,sessions18,sessions45,centers)
 
@@ -122,24 +145,24 @@ def notify():
     pass
 
 
-def createEmail(updates, additions):
+def createEmail(updates, additions, centerdict):
     def read_template(filename):
        with open(filename, 'r', encoding='utf-8') as template_file:
            template_file_content = template_file.read()
        return Template(template_file_content)
 
     email_dict = {}  
-    message = read_template(messages.txt)
+    message = read_template('messages.txt')
     for x in updates:
         mess = message
-        if x.centerID in centerdeets:
-            mess = mess.substitute(NUMBER_OF_SLOTS=str(x.currCap), AGE = str(x.age), CENTER_DETAILS =  centerdeets[x.centerID])
+        if x.centerID in centerdict:
+            mess = mess.substitute(NUMBER_OF_SLOTS=str(x.currCap), AGE = str(x.age), CENTER_DETAILS =  centerdict[x.centerID])
             email_dict[x.centerID] = mess
         
     for x in additions:
         mess = message
-        if x.centerID in centerdeets:
-            mess = mess.substitute(NUMBER_OF_SLOTS=str(x.currCap), AGE = str(x.age), CENTER_DETAILS =  centerdeets[x.centerID])
+        if x.centerID in centerdict:
+            mess = mess.substitute(NUMBER_OF_SLOTS=str(x.currCap), AGE = str(x.age), CENTER_DETAILS =  centerdict[x.centerID])
             email_dict[x.centerID] = mess
 
         
