@@ -2,7 +2,8 @@ import requests
 import json
 from vaxslot import db_data, districtname_to_id
 from vaxslot.scripts.models import sesh, Center, User
-
+import os
+import sys
 
 header = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 
@@ -21,7 +22,7 @@ def initialize():
         centerdict.append({})
         userlist18.append([])
         userlist45.append([])
-    with open('districts_names.txt') as f:
+    with open(os.path.join(sys.path[0],'vaxslot/scripts/districts_names.txt')) as f:
         lines = f.read().splitlines()
     for x in lines:
         y = x.split(': ')
@@ -63,7 +64,7 @@ def getDistricts(stateID):
 
 
 def getDistrictIDs(start=0,finish=757):          #start inclusive, finish excluded, 0 indexed
-    with open('districts.txt') as f:
+    with open(os.path.join(sys.path[0],'vaxslot/scripts/districts.txt'), "r") as f:
         lines = f.read().splitlines()
     lines = [int(x) for x in lines]
     lines = lines[start:finish]
@@ -71,23 +72,23 @@ def getDistrictIDs(start=0,finish=757):          #start inclusive, finish exclud
 
 #this returns a dict indexed by state_names and for each state name, there's a list of 2 tuples.
 # {'Andaman and Nicobar Islands': [['Nicobar', 3], ['North and Middle Andaman', 1], ['South Andaman', 2]], 'Andhra Pradesh': [['Anantapur', 9],...]...}
-def stateToDistrict():
+# def stateToDistrict():
 
-    # states = getStates()['states']
-    # dic = {}
-    # for x in states:
-    #     districts_as_dicts = getDistricts(x['state_id'])
-    #     districts_as_lists =  []
-    #     for y in districts_as_dicts:
-    #         districts_as_lists.append([y['district_name'],y['district_id']])
-    #     dic[x['state_name']]=districts_as_lists
-    # print(dic)
-    # with open('district_data.json', 'w') as f:
-    #     json.dump(dic, f)
-    # return dic
-    with open('district_data.json') as f:
-        dic = json.load(f)
-        # print(dic)
-        return dic
+#     # states = getStates()['states']
+#     # dic = {}
+#     # for x in states:
+#     #     districts_as_dicts = getDistricts(x['state_id'])
+#     #     districts_as_lists =  []
+#     #     for y in districts_as_dicts:
+#     #         districts_as_lists.append([y['district_name'],y['district_id']])
+#     #     dic[x['state_name']]=districts_as_lists
+#     # print(dic)
+#     # with open('district_data.json', 'w') as f:
+#     #     json.dump(dic, f)
+#     # return dic
+#     with open('district_data.json') as f:
+#         dic = json.load(f)
+#         # print(dic)
+#         return dic
 
-stateToDistrict()
+# stateToDistrict()
