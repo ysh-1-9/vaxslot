@@ -2,3 +2,4 @@ WTForms
 Flask
 requests
 Flask-SQLAlchemy
+Flask-WTF
