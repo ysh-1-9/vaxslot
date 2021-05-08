@@ -6,5 +6,5 @@ PORT = 8080
 
 if __name__ == "__main__":
     initialize()
-    app.run(debug = DEBUG, port = PORT)
+    app.run(host='0.0.0.0',debug = DEBUG, port = PORT)
 
