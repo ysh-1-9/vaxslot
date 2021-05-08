@@ -3,18 +3,20 @@ from vaxslot import app
 from vaxslot.scripts.forms import Registration
 from vaxslot.scripts.get_slots import get_slot
 from vaxslot.scripts.models import User
-
 from vaxslot.scripts.common import cache
 
 cache.init_app(app=app, config={"CACHE_TYPE": "filesystem",'CACHE_DIR': 'misc/tmp'})
 cache.set("flag", 0)
 
+dist_exam1 = [('1', '1'), ('2', '2')]
 
 @app.route('/main.html', methods=['GET', 'POST'])
 @app.route('/', methods=['GET', 'POST'])
 def home():
     
     form = Registration()
+    form.district.choices = [dist for dist in dist_exam1]
+    
     flag = cache.get("flag")
     if form.validate_on_submit():
         st = form.state.data

@@ -56,5 +56,26 @@
         </p>
     </div>
 
+    <script>
+        let st = document.getElementById('state');
+        let dst = document.getElementById('district');
+        
+        var dist_exam1 = [['1', '1'], ['2', '2']]
+        var dist_exam2 = [['a', 'A'], ['b', 'B']]
+        var dists = {'andaman and nicobar islands': dist_exam1, 'andhra pradesh': dist_exam2}
+
+
+        st.onchange = function() {
+            state = st.value;
+            options = "";
+            for(let dist of dists[state])
+            {
+                // console.log(dist[0])
+                options += '<option value="' + dist[0] + '">' + dist[1] + '</option>'
+            }
+
+            dst.innerHTML = options;
+        }
+    </script>
 
 {% endblock content %}
