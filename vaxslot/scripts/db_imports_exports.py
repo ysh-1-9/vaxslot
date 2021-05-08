@@ -1,6 +1,5 @@
 import requests
-import json
-from vaxslot import db_data, districtname_to_id
+from vaxslot import db_data, districtname_to_id, user_district, db
 from vaxslot.scripts.models import sesh, Center, User
 import os
 import sys
@@ -12,16 +11,16 @@ def initialize():
     centerdict = []  # list of center dicts, indexed by center.id
     seshlist18 = []  # list of session dicts, age18, indexed by sesh.id
     seshlist45 = []  # list of session dicts, age45, indexed by sesh.id
-    userlist18 = []  # list of user lists, age18
-    userlist45 = []  # list of user lists, age45
+    userlist18 = []  # list of user dicts, age18
+    userlist45 = []  # list of user dicts, age45
     districtIDs = getDistrictIDs()
     for x in range(800):
         db_data.append([])
         seshlist18.append({})
         seshlist45.append({})
         centerdict.append({})
-        userlist18.append([])
-        userlist45.append([])
+        userlist18.append({})
+        userlist45.append({})
     with open(os.path.join(sys.path[0],'vaxslot/scripts/districts_names.txt')) as f:
         lines = f.read().splitlines()
     for x in lines:
@@ -41,10 +40,11 @@ def initialize():
 
     users = User.query.all()
     for x in users:
+        user_district[x.email] = x.district
         if x.age >= 45:
-            userlist45[x.districtID].append(x)  # THIS WON'T RUN UNLESS USER CLASS KA PROTOTYPE IS CHANGED
+            userlist45[x.district][x.email]=x  # THIS WON'T RUN UNLESS USER CLASS KA PROTOTYPE IS CHANGED
         else:
-            userlist45[x.districtID].append(x)
+            userlist18[x.district][x.email]=x
 
     for x in districtIDs:
         db_data[x] = [seshlist18[x], seshlist45[x], centerdict[x], userlist18[x], userlist45[x]]
@@ -69,6 +69,15 @@ def getDistrictIDs(start=0,finish=757):          #start inclusive, finish exclud
     lines = [int(x) for x in lines]
     lines = lines[start:finish]
     return lines
+
+def deleteUser(emailID):
+    # remove user from functional database
+    # send bullshit liberal email
+    if emailID in user_district and emailID in db_data[user_district[emailID]]:
+        del db_data[user_district[emailID]][emailID]
+        User.query.filter_by(id=emailID).delete()
+        db.session.commit()
+
 
 #this returns a dict indexed by state_names and for each state name, there's a list of 2 tuples.
 # {'Andaman and Nicobar Islands': [['Nicobar', 3], ['North and Middle Andaman', 1], ['South Andaman', 2]], 'Andhra Pradesh': [['Anantapur', 9],...]...}

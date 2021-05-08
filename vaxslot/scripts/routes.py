@@ -1,7 +1,6 @@
 from flask import render_template, session, request, url_for, flash, redirect
 from vaxslot import app
 from vaxslot.scripts.forms import Registration
-from vaxslot.scripts.get_slots import get_slot
 from vaxslot.scripts.models import User
 
 

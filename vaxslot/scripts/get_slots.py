@@ -1,25 +1,13 @@
-#
-# import scrapy
-# from scrapy.spiders import SitemapSpider
-# import pandas as pd
+
 import time
 
-import sqlalchemy
-
-from vaxslot import db
-
-from string import Template
 
 import requests
 import datetime
-import sqlite3
+
 
 from vaxslot.scripts.db_imports_exports import header
 from vaxslot.scripts.models import Center, sesh
-
-
-
-
 
 
 def get_slot(districtID, weeks=1):                         #all sessions with available space
@@ -121,10 +109,22 @@ def get_slot(districtID, weeks=1):                         #all sessions with av
 
 
 
-def notify():
+def notify(districtID,sessions,users,centers):
     # go through the users in the (districtID,age)->list of users for every districtID and age
     #  for each districtID,age come up with 3 things - a> email in general likhna hai?, b> updates kya kya dene hai and c> newadditions kya kya batane hai
     # then for each districtID send (or don't) the respective email to all users from that category
+    additions=[]
+    updates=[]
+    for x in sessions:
+        if x.prevCap==0:                  #can get rid of createEmail and do what it does here only for better speed
+            additions.append(x)
+        else:
+            updates.append(x)
+    s = createEmail(updates,additions,centers)
+    #send s
+
+
+
     pass
 
 
@@ -144,7 +144,3 @@ def createEmail(updates, additions, centerdeets):
 
 
 
-def deleteUser(emailID):
-    # remove user from functional database
-    # send bullshit liberal email
-    pass

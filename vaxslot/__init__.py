@@ -10,7 +10,7 @@ db = SQLAlchemy(app)
 
 districtname_to_id={}
 db_data = []
-
+user_district={}
 
 
 
