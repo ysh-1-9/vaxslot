@@ -14,29 +14,12 @@ import requests
 import datetime
 import sqlite3
 
+from vaxslot.scripts.db_imports_exports import header
 from vaxslot.scripts.models import Center, sesh
 
-header = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
-
-def getStates():
-    return requests.get('https://cdn-api.co-vin.in/api/v2/admin/location/states',headers=header ).json()
 
 
-def getStateIDs():
-    states = getStates()
-    return [x['state_id'] for x in states['states']]
 
-
-def getDistricts(stateID):
-    return requests.get('https://cdn-api.co-vin.in/api/v2/admin/location/districts/' + str(stateID),headers=header).json()['districts']
-
-
-def getDistrictIDs(start=0,finish=757):          #start inclusive, finish excluded, 0 indexed
-    with open('districts.txt') as f:
-        lines = f.read().splitlines()
-    lines = [int(x) for x in lines]
-    lines = lines[start:finish]
-    return lines
 
 
 def get_slot(districtID, weeks=1):                         #all sessions with available space
@@ -145,8 +128,8 @@ def notify():
     pass
 
 
-def createEmail(updates, additions, centerdict):
-     s =""
+def createEmail(updates, additions, centerdeets):
+    s =""
     for x in updates:
         if x.centerID in centerdeets:
              s +=  "<tr>" + "<td>" + x.currCap + "</td>" + "<td>" + x.date + "</td>" + "<td>" + x.age + "</td>" + "<td>" + centerdeets[x.centerID].name + "</td>" + "<td>" + centerdeets[x.centerID].address+ "</td>" + "</tr>" 

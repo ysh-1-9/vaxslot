@@ -3,8 +3,9 @@ import itertools
 
 import requests
 import time
-from vaxslot import db, db_data, initialize
-from vaxslot.scripts.get_slots import getStateIDs, getDistrictIDs, get_slot, getStates, header
+from vaxslot import db, db_data
+from vaxslot.scripts.db_imports_exports import getStateIDs, getDistrictIDs, getStates, header
+from vaxslot.scripts.get_slots import get_slot
 from vaxslot.scripts.models import *
 
 def test_get_slot(districtID,weeks=1):
@@ -86,5 +87,4 @@ def updateDB():
     stri = "%s seconds" % (time.time() - start)
     print('Took ',stri)
 
-initialize()
 updateDB()
