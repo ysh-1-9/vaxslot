@@ -1,0 +1,345 @@
+293:  Vijayapura
+365:  Nagpur
+4:  Krishna
+264:  Belgaum
+175:  Bhavnagar
+266:  Mysore
+371:  Kolhapur
+285:  Yadgir
+270:  Bagalkot
+268:  Chitradurga
+130:  Raigarh
+485:  Amritsar
+267:  Gulbarga
+122:  Jashpur
+242:  Bokaro
+382:  Nanded
+571:  Chennai
+282:  Koppal
+373:  Sangli
+289:  Hassan
+489:  Gurdaspur
+488:  Ludhiana
+97:  Patna
+274:  Bellary
+621:  West Tripura
+109:  Raipur
+121:  Janjgir-Champa
+288:  Tumkur
+287:  Shimoga
+528:  Barmer
+637:  Bareilly
+225:  Baramulla
+290:  Mandya
+119:  Durg
+618:  Sepahijala
+118:  Dhamtari
+134:  Surguja
+7:  Kurnool
+180:  Bharuch
+292:  Ramanagara
+498:  Sangrur
+294:  BBMP
+162:  Sabarkantha
+563:  Erode
+733:  Purulia
+156:  Kheda
+363:  Pune
+131:  Rajnandgaon
+770:  Ahmedabad Corporation
+682:  Pratapgarh
+492:  Jalandhar
+14:  Srikakulam
+169:  Jamnagar
+16:  West Godavari
+143:  North West Delhi
+103:  Siwan
+116:  Bilaspur
+414:  East Khasi Hills
+79:  Gaya
+725:  Kolkata
+161:  Patan
+6:  YSR District Kadapa (Cuddapah)
+272:  Bidar
+112:  Balrampur
+541:  Thanjavur
+10:  Chittoor
+487:  Fazilka
+183:  Mahisagar
+76:  Kishanganj
+114:  Bemetara
+159:  Banaskantha
+691:  Siddharthnagar
+677:  Mirzapur
+47:  Barpeta
+375:  Solapur
+622:  Agra
+8:  Visakhapatnam
+383:  Latur
+372:  Ratnagiri
+246:  Palamu
+624:  Prayagraj
+446:  Khurda
+368:  Yavatmal
+632:  Bahraich
+141:  Central Delhi
+491:  Moga
+160:  Mehsana
+735:  South 24 Parganas
+730:  North 24 Parganas
+142:  West Delhi
+660:  Jaunpur
+230:  Jammu
+12:  Prakasam
+643:  Deoria
+297:  Kannur
+86:  Muzaffarpur
+481:  Hoshiarpur
+13:  Sri Potti Sriramulu Nellore
+420:  West Garo Hills
+303:  Thrissur
+653:  Gonda
+560:  Tiruchirappalli
+377:  Wardha
+392:  Thane
+390:  Jalgaon
+164:  Navsari
+208:  Shimla
+692:  Sitapur
+305:  Kozhikode
+234:  Kathua
+213:  Kangra
+127:  Mahasamund
+280:  Gadag
+154:  Ahmedabad
+125:  Korba
+542:  Viluppuram
+167:  Valsad
+776:  Surat Corporation
+133:  Surajpur
+669:  Lalitpur
+179:  Anand
+45:  Tinsukia
+713:  Birbhum
+209:  Solan
+574:  Tiruvarur
+482:  Mansa
+697:  Dehradun
+173:  Rajkot
+158:  Aravalli
+496:  SAS Nagar
+479:  Kapurthala
+9:  Anantapur
+94:  Darbhanga
+736:  Uttar Dinajpur
+370:  Bhandara
+337:  Chhindwara
+504:  Udaipur
+545:  Salem
+214:  Chamba
+249:  Simdega
+105:  East Champaran
+562:  Krishnagiri
+726:  Malda
+90:  Nalanda
+150:  South West Delhi
+558:  Namakkal
+362:  Betul
+170:  Kutch
+235:  Ramban
+649:  Firozabad
+517:  Hanumangarh
+96:  Samastipur
+641:  Chandauli
+239:  Reasi
+670:  Lucknow
+447:  Balasore
+301:  Alappuzha
+321:  Shajapur
+15:  Vizianagaram
+284:  Raichur
+277:  Kolar
+278:  Dharwad
+313:  Gwalior
+577:  Nilgiris
+304:  Kottayam
+338:  Balaghat
+140:  New Delhi
+291:  Chikkaballapur
+565:  Chengalpet
+397:  Aurangabad 
+547:  Cuddalore
+681:  Raebareli
+483:  Barnala
+674:  Mathura
+480:  Ferozpur
+704:  Almora
+312:  Bhopal
+222:  Shopian
+171:  Morbi
+384:  Beed
+702:  Haridwar
+679:  Muzaffarnagar
+146:  North Delhi
+705:  Udham Singh Nagar
+568:  Tiruppur
+659:  Jalaun
+340:  Jhabua
+540:  Madurai
+157:  Surendranagar
+178:  Junagadh
+775:  Rajkot Corporation
+619:  South Tripura
+75:  Katihar
+505:  Jaipur I
+226:  Kupwara
+520:  Dungarpur
+652:  Ghazipur
+314:  Indore
+635:  Banda
+629:  Azamgarh
+302:  Malappuram
+259:  Jamtara
+367:  Buldhana
+5:  Guntur
+221:  Kulgam
+696:  Varanasi
+638:  Basti
+149:  South Delhi
+566:  Dharmapuri
+651:  Ghaziabad
+529:  Pali
+777:  Vadodara Corporation
+510:  Jhunjhunu
+77:  Aurangabad
+387:  Nandurbar
+92:  Nawada
+695:  Unnao
+633:  Balarampur
+49:  Kamrup Metropolitan
+495:  Tarn Taran
+506:  Jaipur II
+88:  Sitamarhi
+524:  Dholpur
+572:  Tiruvallur
+177:  Gir Somnath
+548:  Tirunelveli
+661:  Jhansi
+227:  Pulwama
+110:  Balod
+185:  Panchmahal
+224:  Anantnag
+657:  Hardoi
+219:  Bilaspur
+248:  Seraikela Kharsawan
+165:  Surat
+623:  Aligarh
+685:  Sambhal
+126:  Koriya
+391:  Ahmednagar
+499:  Faridkot
+630:  Badaun
+378:  Gondia
+648:  Fatehpur
+662:  Kannauj
+393:  Raigad
+731:  Paschim Medinipore
+81:  Rohtas
+561:  Sivaganga
+147:  North East Delhi
+238:  Poonch
+553:  Tiruvannamalai
+60:  Goalpara
+727:  Murshidabad
+534:  Sawai Madhopur
+336:  Dindori
+712:  Basirhat HD (North 24 Parganas)
+494:  Patiala
+184:  Narmada
+182:  Dahod
+729:  Nandigram HD (East Medinipore)
+265:  Bangalore Urban
+518:  Rajsamand
+369:  Washim
+263:  West Singhbhum
+70:  Madhepura
+223:  Bandipore
+276:  Bangalore Rural
+634:  Ballia
+300:  Pathanamthitta
+680:  Pilibhit
+82:  Bhagalpur
+351:  Bhind
+543:  Vellore
+640:  Bulandshahr
+379:  Gadchiroli
+271:  Chamarajanagar
+83:  Banka
+388:  Dhule
+721:  Howrah
+617:  North Tripura
+718:  Diamond Harbor HD (S 24 Parganas)
+124:  Kondagaon
+11:  East Godavari
+260:  Sahebganj
+281:  Uttar Kannada
+603:  Rangareddy
+120:  Gariaband
+626:  Amethi
+716:  Dakshin Dinajpur
+354:  Ashoknagar
+113:  Bastar
+781:  Ranipet
+389:  Nashik
+262:  Godda
+123:  Kanker
+552:  Kallakurichi
+71:  Saharsa
+243:  Garhwa
+676:  Meerut
+556:  Dindigul
+395:  Mumbai
+102:  Saran
+667:  Kushinagar
+296:  Thiruvananthapuram
+168:  Devbhumi Dwaraka
+636:  Barabanki
+578:  Attur
+442:  Zunheboto
+394:  Palghar
+172:  Porbandar
+719:  East Bardhaman
+148:  Shahdara
+115:  Bijapur
+188:  Gurgaon
+546:  Pudukkottai
+89:  Vaishali
+240:  Ranchi
+194:  Sirsa
+734:  Rampurhat HD (Birbhum)
+647:  Farrukhabad
+374:  Sindhudurg
+306:  Idukki
+333:  Satna
+502:  Jodhpur
+55:  Morigaon
+199:  Faridabad
+551:  Tenkasi
+327:  Damoh
+396:  Jalna
+106:  West Champaran
+778:  Cheyyar
+539:  Coimbatore
+137:  Dadra and Nagar Haveli
+153:  Gandhinagar
+108:  Chandigarh
+316:  Rewa
+650:  Gautam Buddha Nagar
+570:  Perambalur
+237:  Rajouri
+85:  Munger
+144:  South East Delhi
+128:  Mungeli
+99:  Bhojpur
+569:  Theni
+166:  Tapi
