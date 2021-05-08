@@ -1,3 +1,4 @@
 WTForms
 Flask
 requests
+Flask-SQLAlchemy
