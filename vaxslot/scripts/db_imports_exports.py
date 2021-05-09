@@ -16,6 +16,9 @@ def initialize():
     userlist18 = []  # list of user dicts, age18
     userlist45 = []  # list of user dicts, age45
     districtIDs = getDistrictIDs()
+    state_district = stateToDistrict()
+    with open("state_district.json", "w") as outfile:
+        json.dump(state_district, outfile)
     for x in range(800):
         db_data.append([])
         seshlist18.append({})
@@ -66,7 +69,7 @@ def getDistricts(stateID):
 
 
 def getDistrictIDs(start = dist_start,finish=dist_finish):          #start inclusive, finish excluded, 0 indexed, returns a list of district IDs sorted in the order of decreasing centers
-    with open(os.path.join(sys.path[0],'vaxslot/scripts/districts.txt'), "r") as f:
+    with open('districts.txt', "r") as f:
         lines = f.read().splitlines()
     lines = [int(x) for x in lines]
     lines = lines[start:finish]
