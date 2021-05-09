@@ -69,8 +69,13 @@ def getDistricts(stateID):
 
 
 def getDistrictIDs(start = dist_start,finish=dist_finish):          #start inclusive, finish excluded, 0 indexed, returns a list of district IDs sorted in the order of decreasing centers
-    with open('districts.txt', "r") as f:
-        lines = f.read().splitlines()
+    # with open(os.path.join(sys.path[0], 'vaxslot/scripts/districts.txt'), "r") as f:
+    if __name__ == 'main':
+        with open(os.path.join(sys.path[0],'districts.txt'), "r") as f:
+            lines = f.read().splitlines()
+    else:
+        with open(os.path.join(sys.path[0], 'vaxslot/scripts/districts.txt'), "r") as f:
+            lines = f.read().splitlines()
     lines = [int(x) for x in lines]
     lines = lines[start:finish]
     return lines

@@ -2,20 +2,20 @@ from vaxslot import db, districtname_to_id
 
 
 class User(db.Model):
-    # id = db.Column(db.Integer, primary_key=True)
-    __table_args__ = {'extend_existing': True}
+    # # id = db.Column(db.Integer, primary_key=True)
+    # __table_args__ = {'extend_existing': True}
     email = db.Column(db.String(200), primary_key=True, nullable=False)
     state = db.Column(db.String(50), nullable=False)
     district = db.Column(db.Integer, nullable=False)
     age = db.Column(db.Integer, nullable=False)
-    number = db.Column(db.Integer, unique=True, nullable=True)
+    number = db.Column(db.Integer, nullable=True)
 
     def _repr_(self) -> str:
         return f"E-Mail - {self.email} Age - {self.age} State - {self.district}"
 
 
 class Center(db.Model):
-    __table_args__ = {'extend_existing': True}
+    # __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     address = db.Column(db.String(500))
@@ -28,7 +28,7 @@ class Center(db.Model):
         self.districtID = districtname_to_id[center['district_name']]
 
 class sesh(db.Model):
-    __table_args__ = {'extend_existing': True}
+    # __table_args__ = {'extend_existing': True}
     id = db.Column(db.String(50), primary_key=True)
     districtID = db.Column(db.Integer)
     age = db.Column(db.Integer)             #bool karke can save space until 18- starts
