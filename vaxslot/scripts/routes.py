@@ -20,11 +20,11 @@ def home():
         print(form.district.data)
         print(form.number.data)
         print(form.age.data)
-        data.email = form.email.data
-        data.state = form.state.data
-        data.districtID = form.district.data
-        data.number = form.number.data
-        data.age = int(form.age.data)
+        # data.email = form.email.data
+        # data.state = form.state.data
+        # data.districtID = form.district.data
+        # data.number = form.number.data
+        # data.age = int(form.age.data)
         form.state.data = 'Andaman and Nicobar Islands'
         form.email.data = None
         form.number.data = None
