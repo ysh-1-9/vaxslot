@@ -13,6 +13,6 @@ db_data = []
 user_district={}
 
 dist_start=0
-dist_finish = 346             #max 757 min 1
+dist_finish = 346            #max 757, min 1, 346 at 80%
 
 from vaxslot.scripts import routes

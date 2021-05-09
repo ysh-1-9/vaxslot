@@ -9,7 +9,7 @@ from vaxslot.scripts.models import User
 @app.route('/main.html', methods=['GET', 'POST'])
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    dists = stateToDistrict()
+    # dists = stateToDistrict()
     form = Registration()
     # print(form.state.data)
     form.district.choices = [(dist[1], dist[0]) for dist in dists['Andaman and Nicobar Islands']]
