@@ -9,7 +9,7 @@ from vaxslot.scripts.models import User
 @app.route('/main.html', methods=['GET', 'POST'])
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    # dists = stateToDistrict()
+    dists = stateToDistrict()
     form = Registration()
     # print(form.state.data)
     form.district.choices = [(dist[1], dist[0]) for dist in dists['Andaman and Nicobar Islands']]
@@ -30,18 +30,18 @@ def home():
             data.age = int(form.age.data)
         else:
             print('Invalid Age')
-
-        form.state.data = 'Andaman and Nicobar Islands'
-        form.email.data = None
-        form.number.data = None
-        form.age.data = None
-        if data.email not in db_data[data.districtID][(3 if data.age<45 else 4)]:
-            db_data[data.districtID][3 if data.age<45 else 4][data.email] = data
+        if data.email not in db_data[int(data.districtID)][3 if data.age<45 else 4]:
+            db_data[int(data.districtID)][3 if data.age<45 else 4][data.email] = data
             db.session.add(data)
             db.session.commit()
             print("Details have been added.")
         else:
             print("Duplicate registration")
+        form.state.data = 'Andaman and Nicobar Islands'
+        form.email.data = None
+        form.number.data = None
+        form.age.data = None
+
 
     
     return render_template('main.html', form=form)

@@ -1,3 +1,10 @@
+import smtplib, ssl
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+from vaxslot import sender_email, server
+
+
 def notify(districtID, sessions, users, centers):
     # go through the users in the (districtID,age)->list of users for every districtID and age
     #  for each districtID,age come up with 3 things - a> email in general likhna hai?, b> updates kya kya dene hai and c> newadditions kya kya batane hai
@@ -9,10 +16,19 @@ def notify(districtID, sessions, users, centers):
             additions.append(x)
         else:
             updates.append(x)
+    if len(updates) + len(additions) == 0:
+        return
     s = createEmail(updates, additions, centers)
-    # send s
-
-    pass
+    bcc = users.keys()
+    recipients = ', '.join(bcc)
+    if len(bcc) !=0:
+        message = MIMEMultipart("alternative")
+        message["Subject"] = "Vaccine Slots Available"
+        message["From"] = sender_email
+        message["To"] = 'yash@vaxslot.in'
+        message['Bcc'] = recipients
+        message.attach(MIMEText(s,'plain'))
+        server.send_message(message)
 
 
 def createEmail(updates, additions, centerdeets):
@@ -32,26 +48,15 @@ def createEmail(updates, additions, centerdeets):
     return s
 
 
-def send():
-    import smtplib, ssl
+def send_test():
+    s = 'Test Message 3'
+    bcc = ['evilyash02@gmail.com','yash.dps@outlook.com','yash@vaxslot.in']
+    recipients = ', '.join(bcc)
 
-    port = 465  # For SSL
-    password = 'toHmip-myvgoq-tyhka2'
-
-    # Create a secure SSL context
-    context = ssl.create_default_context()
-
-    with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
-        server.login("vaxslottest@gmail.com", password)
-        # TODO: Send email here
-        sender_email = "vaxslottest@gmail.com"
-        receiver_email = "yash@vaxslot.in"
-        message = """\
-        Subject: Hi there
-
-        This message is sent from Python."""
-        server.sendmail(sender_email, receiver_email, message)
-
-
-
-send()
+    message = MIMEMultipart("alternative")
+    message["Subject"] = "Vaccine Slots Available"
+    message["From"] = sender_email
+    message["To"] = 'yash@vaxslot.in'
+    message['Bcc'] = recipients
+    message.attach(MIMEText(s, 'plain'))
+    server.send_message(message)
