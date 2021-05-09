@@ -1,5 +1,7 @@
+import json
+
 import requests
-from vaxslot import db_data, districtname_to_id, user_district, db
+from vaxslot import db_data, districtname_to_id, user_district, db, dist_start, dist_finish
 from vaxslot.scripts.models import sesh, Center, User
 import os
 import sys
@@ -63,7 +65,7 @@ def getDistricts(stateID):
     return requests.get('https://cdn-api.co-vin.in/api/v2/admin/location/districts/' + str(stateID),headers=header).json()['districts']
 
 
-def getDistrictIDs(start=0,finish=757):          #start inclusive, finish excluded, 0 indexed
+def getDistrictIDs(start = dist_start,finish=dist_finish):          #start inclusive, finish excluded, 0 indexed, returns a list of district IDs sorted in the order of decreasing centers
     with open(os.path.join(sys.path[0],'vaxslot/scripts/districts.txt'), "r") as f:
         lines = f.read().splitlines()
     lines = [int(x) for x in lines]
@@ -81,23 +83,31 @@ def deleteUser(emailID):
 
 #this returns a dict indexed by state_names and for each state name, there's a list of 2 tuples.
 # {'Andaman and Nicobar Islands': [['Nicobar', 3], ['North and Middle Andaman', 1], ['South Andaman', 2]], 'Andhra Pradesh': [['Anantapur', 9],...]...}
-# def stateToDistrict():
+def stateToDistrict(start=dist_start,finish=dist_finish):
 
-#     # states = getStates()['states']
-#     # dic = {}
-#     # for x in states:
-#     #     districts_as_dicts = getDistricts(x['state_id'])
-#     #     districts_as_lists =  []
-#     #     for y in districts_as_dicts:
-#     #         districts_as_lists.append([y['district_name'],y['district_id']])
-#     #     dic[x['state_name']]=districts_as_lists
-#     # print(dic)
-#     # with open('district_data.json', 'w') as f:
-#     #     json.dump(dic, f)
-#     # return dic
-#     with open('district_data.json') as f:
-#         dic = json.load(f)
-#         # print(dic)
-#         return dic
+    # states = getStates()['states']
+    # dic = {}
+    # for x in states:
+    #     districts_as_dicts = getDistricts(x['state_id'])
+    #     districts_as_lists =  []
+    #     for y in districts_as_dicts:
+    #         districts_as_lists.append([y['district_name'],y['district_id']])
+    #     dic[x['state_name']]=districts_as_lists
+    # print(dic)
+    # with open('district_data.json', 'w') as f:
+    #     json.dump(dic, f)
+    # return dic
+    districts = getDistrictIDs(start,finish)
+    districts_dict = {x:True for x in districts}
+
+    with open('district_data.json') as f:
+        dic = json.load(f)
+        # print(dic)
+        for state,distlist in dic.items:
+            for x in distlist:
+                if x[1] not in districts_dict:
+                    dic[state].remove(x)
+
+        return dic
 
 # stateToDistrict()
