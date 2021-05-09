@@ -1,5 +1,5 @@
 from flask import render_template, session, request, url_for, flash, redirect
-from vaxslot import app
+from vaxslot import app, db, db_data
 from vaxslot.scripts.forms import Registration
 from vaxslot.scripts.models import User
 
@@ -20,17 +20,27 @@ def home():
         print(form.district.data)
         print(form.number.data)
         print(form.age.data)
-        # data.email = form.email.data
-        # data.state = form.state.data
-        # data.districtID = form.district.data
-        # data.number = form.number.data
-        # data.age = int(form.age.data)
+        data.email = form.email.data
+        data.state = form.state.data
+        data.districtID = form.district.data
+        data.number = form.number.data
+
+        if form.age.data is not None:
+            data.age = int(form.age.data)
+        else:
+            print('Invalid Age')
+
         form.state.data = 'Andaman and Nicobar Islands'
         form.email.data = None
         form.number.data = None
         form.age.data = None
-        # db.session.add(data)
-        # db.session.commit()
-        print("Details have been added.")
+        if data.email not in db_data[data.districtID][(3 if data.age<45 else 4)]:
+            db_data[data.districtID][3 if data.age<45 else 4][data.email] = data
+            db.session.add(data)
+            db.session.commit()
+            print("Details have been added.")
+        else:
+            print("Duplicate registration")
+
     
     return render_template('main.html', form=form)
