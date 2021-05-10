@@ -9,7 +9,7 @@ import sys
 header = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 
 def initialize():
-
+    print('Starting Initialization')
     centerdict = []  # list of center dicts, indexed by center.id
     seshlist18 = []  # list of session dicts, age18, indexed by sesh.id
     seshlist45 = []  # list of session dicts, age45, indexed by sesh.id
@@ -53,6 +53,7 @@ def initialize():
 
     for x in districtIDs:
         db_data[x] = [seshlist18[x], seshlist45[x], centerdict[x], userlist18[x], userlist45[x]]
+    print('Initialization Done')
 
 
 def getStates():
