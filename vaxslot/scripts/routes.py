@@ -23,14 +23,17 @@ def home():
         print(form.age.data)
         data.email = form.email.data
         data.state = form.state.data
-        data.district = form.district.data
+        data.district = int(form.district.data)
         data.number = form.number.data
 
         if form.age.data is not None:
             data.age = int(form.age.data)
         else:
             print('Invalid Age')
-        if data.email not in db_data[int(data.district)][3 if data.age<45 else 4]:
+        print(db_data)
+        print(db_data[data.district])
+        print(db_data[data.district][3 if data.age<45 else 4])
+        if data.email not in db_data[data.district][3 if data.age<45 else 4]:
             db_data[int(data.district)][3 if data.age<45 else 4][data.email] = data
             db.session.add(data)
             db.session.commit()
