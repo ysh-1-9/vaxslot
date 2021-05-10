@@ -54,6 +54,7 @@ def initialize():
     for x in districtIDs:
         db_data[x] = [seshlist18[x], seshlist45[x], centerdict[x], userlist18[x], userlist45[x]]
     print('Initialization Done')
+    print(db_data)
 
 
 def getStates():
