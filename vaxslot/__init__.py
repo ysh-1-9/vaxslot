@@ -3,7 +3,13 @@ import ssl
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from rq import Queue
 
+from vaxslot.scripts.automator import automate
+from vaxslot.scripts.db_imports_exports import initialize
+from vaxslot.scripts.worker import conn
+
+q = Queue(connection=conn)
 
 
 app = Flask(__name__)
@@ -26,5 +32,8 @@ password = 'toHmip-myvgoq-tyhka2'
 context = ssl.create_default_context()
 server  = smtplib.SMTP_SSL("smtp.gmail.com", port, context=context)
 server.login(sender_email, password)
+
+q.enqueue(initialize)
+q.enqueue(automate)
 
 from vaxslot.scripts import routes

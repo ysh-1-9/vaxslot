@@ -5,3 +5,4 @@ Flask-SQLAlchemy
 Flask-WTF
 email_validator
 gunicorn
+rq
