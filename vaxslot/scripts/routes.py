@@ -30,8 +30,8 @@ def home():
         else:
             print('Invalid Age')
 
-        users = User.query.filter_by(email=data.email)
-
+        users = User.query.filter_by(email=data.email).first()
+        print(users)
         if users is None:
             db.session.add(data)
             db.session.commit()

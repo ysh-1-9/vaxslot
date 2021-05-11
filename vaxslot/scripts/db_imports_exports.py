@@ -84,4 +84,4 @@ def stateToDistrict(start=dist_start,finish=dist_finish):
 # print(sum(len(x) for y,x in stateToDistrict().items()))
 # initialize()
 # print(districtname_to_id)
-print(getDistrictIDs())
+# print(getDistrictIDs())
