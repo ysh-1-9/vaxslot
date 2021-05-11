@@ -5,9 +5,9 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from rq import Queue
 
-from worker import conn
-
-q = Queue(connection=conn)
+# from worker import conn
+#
+#
 
 
 app = Flask(__name__)
@@ -31,9 +31,5 @@ context = ssl.create_default_context()
 server  = smtplib.SMTP_SSL("smtp.gmail.com", port, context=context)
 server.login(sender_email, password)
 
-from vaxslot.scripts.automator import automate
-from vaxslot.scripts.db_imports_exports import initialize
-q.enqueue(initialize)
-q.enqueue(automate)
 
 from vaxslot.scripts import routes
