@@ -33,8 +33,8 @@ def automate():
         centerdict.append({})
         userlist18.append({})
         userlist45.append({})
-    with open(os.path.join(sys.path[0], 'districts_names.txt')) as f:
-        lines = f.read().splitlines()
+    # with open(os.path.join(sys.path[0], 'districts_names.txt')) as f:
+    #     lines = f.read().splitlines()
     # for x in lines:
     #     y = x.split(': ')
     #     districtname_to_id[y[1]] = int(y[0])
