@@ -2,7 +2,7 @@ import datetime
 
 import requests
 import time
-from vaxslot import db, db_data
+from vaxslot import db
 from vaxslot.scripts.db_imports_exports import getStateIDs, getDistrictIDs, getStates, header
 from vaxslot.scripts.get_slots import get_slot
 from vaxslot.scripts.models import *
@@ -46,7 +46,7 @@ def test_get_slot(districtID,weeks=1):
 
 
 
-def updateDB(districtID):
+def updateDB(districtID, db_data):
     # updates the available sessions table in db
     # updates the centers table in db
 

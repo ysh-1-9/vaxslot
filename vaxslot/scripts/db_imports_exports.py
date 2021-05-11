@@ -1,60 +1,17 @@
 import json
 
 import requests
-from vaxslot import db_data, districtname_to_id, user_district, db, dist_start, dist_finish
+from vaxslot import db
 from vaxslot.scripts.models import sesh, Center, User
 import os
 import sys
 
 header = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 
-def initialize():
-    print('Starting Initialization')
-    centerdict = []  # list of center dicts, indexed by center.id
-    seshlist18 = []  # list of session dicts, age18, indexed by sesh.id
-    seshlist45 = []  # list of session dicts, age45, indexed by sesh.id
-    userlist18 = []  # list of user dicts, age18
-    userlist45 = []  # list of user dicts, age45
-    districtIDs = getDistrictIDs()
-    state_district = stateToDistrict()
-    with open("state_district.json", "w") as outfile:
-        json.dump(state_district, outfile)
-    for x in range(800):
-        db_data.append([])
-        seshlist18.append({})
-        seshlist45.append({})
-        centerdict.append({})
-        userlist18.append({})
-        userlist45.append({})
-    with open(os.path.join(sys.path[0],'vaxslot/scripts/districts_names.txt')) as f:
-        lines = f.read().splitlines()
-    for x in lines:
-        y = x.split(': ')
-        districtname_to_id[y[1]] = int(y[0])
 
-    centers = Center.query.all()
-    for x in centers:
-        centerdict[x.districtID][x.id] = x
-
-    seshes = sesh.query.all()
-    for x in seshes:
-        if x.age == 18:
-            seshlist18[x.districtID][x.id] = x
-        else:
-            seshlist45[x.districtID][x.id] = x
-
-    users = User.query.all()
-    for x in users:
-        user_district[x.email] = x.district
-        if x.age >= 45:
-            userlist45[x.district][x.email]=x  # THIS WON'T RUN UNLESS USER CLASS KA PROTOTYPE IS CHANGED
-        else:
-            userlist18[x.district][x.email]=x
-
-    for x in districtIDs:
-        db_data[x] = [seshlist18[x], seshlist45[x], centerdict[x], userlist18[x], userlist45[x]]
-    print('Initialization Done')
-    print(db_data)
+districtname_to_id = {'North and Middle Andaman': 1, 'South Andaman': 2, 'Nicobar': 3, 'Krishna': 4, 'Guntur': 5, 'YSR District Kadapa (Cuddapah)': 6, 'Kurnool': 7, 'Visakhapatnam': 8, 'Anantapur': 9, 'Chittoor': 10, 'East Godavari': 11, 'Prakasam': 12, 'Sri Potti Sriramulu Nellore': 13, 'Srikakulam': 14, 'Vizianagaram': 15, 'West Godavari': 16, 'Itanagar Capital Complex': 17, 'Lower Siang': 18, 'Pakke Kessang': 19, 'Changlang': 20, 'Kurung Kumey': 21, 'Anjaw': 22, 'East Kameng': 23, 'Kamle': 24, 'Dibang Valley': 25, 'Tirap': 26, 'Kra Daadi': 27, 'West Kameng': 28, 'Lohit': 29, 'Tawang': 30, 'Lower Dibang Valley': 31, 'Lower Subansiri': 32, 'Lepa Rada': 33, 'Upper Siang': 34, 'Shi Yomi': 35, 'Namsai': 36, 'Siang': 37, 'West Siang': 38, 'Papum Pare': 39, 'Longding': 40, 'Upper Subansiri': 41, 'East Siang': 42, 'Dibrugarh': 43, 'Sivasagar': 44, 'Tinsukia': 45, 'Baksa': 46, 'Barpeta': 47, 'Darrang': 48, 'Kamrup Metropolitan': 49, 'Kamrup Rural': 50, 'Karbi-Anglong': 51, 'Nalbari': 52, 'Golaghat': 53, 'Jorhat': 54, 'Morigaon': 55, 'Nagaon': 56, 'Bongaigaon': 57, 'Chirang': 58, 'Dhubri': 59, 'Goalpara': 60, 'Kokrajhar': 61, 'Dhemaji': 62, 'Lakhimpur': 63, 'Sonitpur': 64, 'Udalguri': 65, 'Cachar': 66, 'Dima Hasao': 67, 'Hailakandi': 68, 'Karimganj': 69, 'Madhepura': 70, 'Saharsa': 71, 'Supaul': 72, 'Purnia': 73, 'Araria': 74, 'Katihar': 75, 'Kishanganj': 76, 'Aurangabad': 77, 'Arwal': 78, 'Gaya': 79, 'Kaimur': 80, 'Rohtas': 81, 'Bhagalpur': 82, 'Banka': 83, 'Lakhisarai': 84, 'Munger': 85, 'Muzaffarpur': 86, 'Sheohar': 87, 'Sitamarhi': 88, 'Vaishali': 89, 'Nalanda': 90, 'Jehanabad': 91, 'Nawada': 92, 'Sheikhpura': 93, 'Darbhanga': 94, 'Madhubani': 95, 'Samastipur': 96, 'Patna': 97, 'Begusarai': 98, 'Bhojpur': 99, 'Buxar': 100, 'Khagaria': 101, 'Saran': 102, 'Siwan': 103, 'Gopalganj': 104, 'East Champaran': 105, 'West Champaran': 106, 'Jamui': 107, 'Chandigarh': 108, 'Raipur': 109, 'Balod': 110, 'Baloda bazar': 111, 'Balrampur': 112, 'Bastar': 113, 'Bemetara': 114, 'Bijapur': 115, 'Bilaspur': 219, 'Dantewada': 117, 'Dhamtari': 118, 'Durg': 119, 'Gariaband': 120, 'Janjgir-Champa': 121, 'Jashpur': 122, 'Kanker': 123, 'Kondagaon': 124, 'Korba': 125, 'Koriya': 126, 'Mahasamund': 127, 'Mungeli': 128, 'Narayanpur': 129, 'Raigarh': 130, 'Rajnandgaon': 131, 'Sukma': 132, 'Surajpur': 133, 'Surguja': 134, 'Kawardha': 135, 'Gaurela Pendra Marwahi ': 136, 'Dadra and Nagar Haveli': 137, 'New Delhi': 140, 'Central Delhi': 141, 'West Delhi': 142, 'North West Delhi': 143, 'South East Delhi': 144, 'East Delhi': 145, 'North Delhi': 146, 'North East Delhi': 147, 'Shahdara': 148, 'South Delhi': 149, 'South West Delhi': 150, 'North Goa': 151, 'South Goa': 152, 'Gandhinagar': 153, 'Ahmedabad': 154, 'Vadodara': 155, 'Kheda': 156, 'Surendranagar': 157, 'Aravalli': 158, 'Banaskantha': 159, 'Mehsana': 160, 'Patan': 161, 'Sabarkantha': 162, 'Dang': 163, 'Navsari': 164, 'Surat': 165, 'Tapi': 166, 'Valsad': 167, 'Devbhumi Dwaraka': 168, 'Jamnagar': 169, 'Kutch': 170, 'Morbi': 171, 'Porbandar': 172, 'Rajkot': 173, 'Amreli': 174, 'Bhavnagar': 175, 'Botad': 176, 'Gir Somnath': 177, 'Junagadh': 178, 'Anand': 179, 'Bharuch': 180, 'Chhotaudepur': 181, 'Dahod': 182, 'Mahisagar': 183, 'Narmada': 184, 'Panchmahal': 185, 'Kurukshetra': 186, 'Panchkula': 187, 'Gurgaon': 188, 'Jhajjar': 189, 'Kaithal': 190, 'Hisar': 191, 'Rohtak': 192, 'Ambala': 193, 'Sirsa': 194, 'Panipat': 195, 'Fatehabad': 196, 'Yamunanagar': 197, 'Sonipat': 198, 'Faridabad': 199, 'Bhiwani': 200, 'Charkhi Dadri': 201, 'Rewari': 202, 'Karnal': 203, 'Jind': 204, 'Nuh': 205, 'Mahendragarh': 206, 'Palwal': 207, 'Shimla': 208, 'Solan': 209, 'Lahaul Spiti': 210, 'Kullu': 211, 'Sirmaur': 212, 'Kangra': 213, 'Chamba': 214, 'Mandi': 215, 'Kinnaur': 216, 'Hamirpur': 655, 'Una': 218, 'Srinagar': 220, 'Kulgam': 221, 'Shopian': 222, 'Bandipore': 223, 'Anantnag': 224, 'Baramulla': 225, 'Kupwara': 226, 'Pulwama': 227, 'Ganderbal': 228, 'Budgam': 229, 'Jammu': 230, 'Kishtwar': 231, 'Doda': 232, 'Udhampur': 233, 'Kathua': 234, 'Ramban': 235, 'Samba': 236, 'Rajouri': 237, 'Poonch': 238, 'Reasi': 239, 'Ranchi': 240, 'Koderma': 241, 'Bokaro': 242, 'Garhwa': 243, 'Latehar': 244, 'Chatra': 245, 'Palamu': 246, 'East Singhbhum': 247, 'Seraikela Kharsawan': 248, 'Simdega': 249, 'Lohardaga': 250, 'Gumla': 251, 'Khunti': 252, 'Deoghar': 253, 'Ramgarh': 254, 'Hazaribagh': 255, 'Giridih': 256, 'Dhanbad': 257, 'Dumka': 258, 'Jamtara': 259, 'Sahebganj': 260, 'Pakur': 261, 'Godda': 262, 'West Singhbhum': 263, 'Belgaum': 264, 'Bangalore Urban': 265, 'Mysore': 266, 'Gulbarga': 267, 'Chitradurga': 268, 'Dakshina Kannada': 269, 'Bagalkot': 270, 'Chamarajanagar': 271, 'Bidar': 272, 'Chikamagalur': 273, 'Bellary': 274, 'Davanagere': 275, 'Bangalore Rural': 276, 'Kolar': 277, 'Dharwad': 278, 'Haveri': 279, 'Gadag': 280, 'Uttar Kannada': 281, 'Koppal': 282, 'Kodagu': 283, 'Raichur': 284, 'Yadgir': 285, 'Udupi': 286, 'Shimoga': 287, 'Tumkur': 288, 'Hassan': 289, 'Mandya': 290, 'Chikkaballapur': 291, 'Ramanagara': 292, 'Vijayapura': 293, 'BBMP': 294, 'Kasaragod': 295, 'Thiruvananthapuram': 296, 'Kannur': 297, 'Kollam': 298, 'Wayanad': 299, 'Pathanamthitta': 300, 'Alappuzha': 301, 'Malappuram': 302, 'Thrissur': 303, 'Kottayam': 304, 'Kozhikode': 305, 'Idukki': 306, 'Ernakulam': 307, 'Palakkad': 308, 'Kargil': 309, 'Leh': 310, 'Lakshadweep': 311, 'Bhopal': 312, 'Gwalior': 313, 'Indore': 314, 'Jabalpur': 315, 'Rewa': 316, 'Sagar': 317, 'Ujjain': 318, 'Mandsaur': 319, 'Agar': 320, 'Shajapur': 321, 'Ratlam': 322, 'Neemuch': 323, 'Dewas': 324, 'Tikamgarh': 325, 'Panna': 326, 'Damoh': 327, 'Chhatarpur': 328, 'Umaria': 329, 'Singrauli': 330, 'Sidhi': 331, 'Shahdol': 332, 'Satna': 333, 'Anuppur': 334, 'Mandla': 335, 'Dindori': 336, 'Chhindwara': 337, 'Balaghat': 338, 'Khandwa': 339, 'Jhabua': 340, 'Dhar': 341, 'Burhanpur': 342, 'Barwani': 343, 'Khargone': 344, 'Shivpuri': 345, 'Sheopur': 346, 'Morena': 347, 'Guna': 348, 'Seoni': 349, 'Datia': 350, 'Bhind': 351, 'Narsinghpur': 352, 'Katni': 353, 'Ashoknagar': 354, 'Vidisha': 355, 'Sehore': 356, 'Alirajpur': 357, 'Rajgarh': 358, 'Raisen': 359, 'Hoshangabad': 360, 'Harda': 361, 'Betul': 362, 'Pune': 363, 'Akola': 364, 'Nagpur': 365, 'Amravati': 366, 'Buldhana': 367, 'Yavatmal': 368, 'Washim': 369, 'Bhandara': 370, 'Kolhapur': 371, 'Ratnagiri': 372, 'Sangli': 373, 'Sindhudurg': 374, 'Solapur': 375, 'Satara': 376, 'Wardha': 377, 'Gondia': 378, 'Gadchiroli': 379, 'Chandrapur': 380, 'Osmanabad': 381, 'Nanded': 382, 'Latur': 383, 'Beed': 384, 'Parbhani': 385, 'Hingoli': 386, 'Nandurbar': 387, 'Dhule': 388, 'Nashik': 389, 'Jalgaon': 390, 'Ahmednagar': 391, 'Thane': 392, 'Raigad': 393, 'Palghar': 394, 'Mumbai': 395, 'Jalna': 396, 'Aurangabad ': 397, 'Bishnupur': 398, 'Chandel': 399, 'Churachandpur': 400, 'Imphal East': 401, 'Imphal West': 402, 'Senapati': 403, 'Tamenglong': 404, 'Thoubal': 405, 'Ukhrul': 406, 'Tengnoupal': 407, 'Kangpokpi': 408, 'Kamjong': 409, 'Jiribam': 410, 'Pherzawl': 411, 'Noney': 412, 'Kakching': 413, 'East Khasi Hills': 414, 'South West Khasi Hills': 415, 'West Jaintia Hills': 416, 'Ri-Bhoi': 417, 'East Jaintia Hills': 418, 'West Khasi Hills': 419, 'West Garo Hills': 420, 'South Garo Hills': 421, 'South West Garo Hills': 422, 'North Garo Hills': 423, 'East Garo Hills': 424, 'Aizawl East': 425, 'Aizawl West': 426, 'Mamit': 427, 'Kolasib': 428, 'Champhai': 429, 'Serchhip': 430, 'Lunglei': 431, 'Lawngtlai': 432, 'Siaha': 433, 'Dimapur': 434, 'Peren': 435, 'Wokha': 436, 'Mokokchung': 437, 'Longleng': 438, 'Mon': 439, 'Tuensang': 440, 'Kohima': 441, 'Zunheboto': 442, 'Phek': 443, 'Kiphire': 444, 'Angul': 445, 'Khurda': 446, 'Balasore': 447, 'Balangir': 448, 'Ganjam': 449, 'Kandhamal': 450, 'Koraput': 451, 'Sambalpur': 452, 'Sundargarh': 453, 'Bhadrak': 454, 'Kendujhar': 455, 'Mayurbhanj': 456, 'Cuttack': 457, 'Dhenkanal': 458, 'Jagatsinghpur': 459, 'Jajpur': 460, 'Kendrapara': 461, 'Nayagarh': 462, 'Puri': 463, 'Kalahandi': 464, 'Nuapada': 465, 'Subarnapur': 466, 'Gajapati': 467, 'Boudh': 468, 'Malkangiri': 469, 'Nabarangpur': 470, 'Rayagada': 471, 'Bargarh': 472, 'Deogarh': 473, 'Jharsuguda': 474, 'Puducherry': 475, 'Karaikal': 476, 'Mahe': 477, 'Yanam': 478, 'Kapurthala': 479, 'Ferozpur': 480, 'Hoshiarpur': 481, 'Mansa': 482, 'Barnala': 483, 'Fatehgarh Sahib': 484, 'Amritsar': 485, 'Pathankot': 486, 'Fazilka': 487, 'Ludhiana': 488, 'Gurdaspur': 489, 'Sri Muktsar Sahib': 490, 'Moga': 491, 'Jalandhar': 492, 'Bathinda': 493, 'Patiala': 494, 'Tarn Taran': 495, 'SAS Nagar': 496, 'Rup Nagar': 497, 'Sangrur': 498, 'Faridkot': 499, 'SBS Nagar': 500, 'Bikaner': 501, 'Jodhpur': 502, 'Kota': 503, 'Udaipur': 504, 'Jaipur I': 505, 'Jaipur II': 506, 'Ajmer': 507, 'Bharatpur': 508, 'Sri Ganganagar': 509, 'Jhunjhunu': 510, 'Dausa': 511, 'Alwar': 512, 'Sikar': 513, 'Bundi': 514, 'Jhalawar': 515, 'Baran': 516, 'Hanumangarh': 517, 'Rajsamand': 518, 'Banswara': 519, 'Dungarpur': 520, 'Chittorgarh': 521, 'Pratapgarh': 682, 'Bhilwara': 523, 'Dholpur': 524, 'Karauli': 525, 'Tonk': 526, 'Jaisalmer': 527, 'Barmer': 528, 'Pali': 529, 'Churu': 530, 'Sirohi': 531, 'Nagaur': 532, 'Jalore': 533, 'Sawai Madhopur': 534, 'East Sikkim': 535, 'West Sikkim': 536, 'North Sikkim': 537, 'South Sikkim': 538, 'Coimbatore': 539, 'Madurai': 540, 'Thanjavur': 541, 'Viluppuram': 542, 'Vellore': 543, 'Kanyakumari': 544, 'Salem': 545, 'Pudukkottai': 546, 'Cuddalore': 547, 'Tirunelveli': 548, 'Virudhunagar': 549, 'Tirupattur': 550, 'Tenkasi': 551, 'Kallakurichi': 552, 'Tiruvannamalai': 553, 'Thoothukudi (Tuticorin)': 554, 'Ariyalur': 555, 'Dindigul': 556, 'Kanchipuram': 557, 'Namakkal': 558, 'Karur': 559, 'Tiruchirappalli': 560, 'Sivaganga': 561, 'Krishnagiri': 562, 'Erode': 563, 'Palani': 564, 'Chengalpet': 565, 'Dharmapuri': 566, 'Ramanathapuram': 567, 'Tiruppur': 568, 'Theni': 569, 'Perambalur': 570, 'Chennai': 571, 'Tiruvallur': 572, 'Paramakudi': 573, 'Tiruvarur': 574, 'Poonamallee': 575, 'Nagapattinam': 576, 'Nilgiris': 577, 'Attur': 578, 'Sivakasi': 580, 'Hyderabad': 581, 'Adilabad': 582, 'Bhadradri Kothagudem': 583, 'Jagtial': 584, 'Jangaon': 585, 'Jayashankar Bhupalpally': 586, 'Jogulamba Gadwal': 587, 'Kamareddy': 588, 'Karimnagar': 589, 'Khammam': 590, 'Kumuram Bheem': 591, 'Mahabubabad': 592, 'Mahabubnagar': 593, 'Mancherial': 594, 'Medak': 595, 'Medchal': 596, 'Nagarkurnool': 597, 'Nalgonda': 598, 'Nirmal': 599, 'Nizamabad': 600, 'Peddapalli': 601, 'Rajanna Sircilla': 602, 'Rangareddy': 603, 'Sangareddy': 604, 'Siddipet': 605, 'Suryapet': 606, 'Vikarabad': 607, 'Wanaparthy': 608, 'Warangal(Rural)': 609, 'Warangal(Urban)': 610, 'Yadadri Bhuvanagiri': 611, 'Mulugu': 612, 'Narayanpet': 613, 'Dhalai': 614, 'Gomati': 615, 'Khowai': 616, 'North Tripura': 617, 'Sepahijala': 618, 'South Tripura': 619, 'Unakoti': 620, 'West Tripura': 621, 'Agra': 622, 'Aligarh': 623, 'Prayagraj': 624, 'Ambedkar Nagar': 625, 'Amethi': 626, 'Amroha': 627, 'Auraiya': 628, 'Azamgarh': 629, 'Badaun': 630, 'Baghpat': 631, 'Bahraich': 632, 'Balarampur': 633, 'Ballia': 634, 'Banda': 635, 'Barabanki': 636, 'Bareilly': 637, 'Basti': 638, 'Bijnour': 639, 'Bulandshahr': 640, 'Chandauli': 641, 'Chitrakoot': 642, 'Deoria': 643, 'Etah': 644, 'Etawah': 645, 'Ayodhya': 646, 'Farrukhabad': 647, 'Fatehpur': 648, 'Firozabad': 649, 'Gautam Buddha Nagar': 650, 'Ghaziabad': 651, 'Ghazipur': 652, 'Gonda': 653, 'Gorakhpur': 654, 'Hapur': 656, 'Hardoi': 657, 'Hathras': 658, 'Jalaun': 659, 'Jaunpur': 660, 'Jhansi': 661, 'Kannauj': 662, 'Kanpur Dehat': 663, 'Kanpur Nagar': 664, 'Kasganj': 665, 'Kaushambi': 666, 'Kushinagar': 667, 'Lakhimpur Kheri': 668, 'Lalitpur': 669, 'Lucknow': 670, 'Maharajganj': 671, 'Mahoba': 672, 'Mainpuri': 673, 'Mathura': 674, 'Mau': 675, 'Meerut': 676, 'Mirzapur': 677, 'Moradabad': 678, 'Muzaffarnagar': 679, 'Pilibhit': 680, 'Raebareli': 681, 'Rampur': 683, 'Saharanpur': 684, 'Sambhal': 685, 'Sant Kabir Nagar': 686, 'Bhadohi': 687, 'Shahjahanpur': 688, 'Shamli': 689, 'Shravasti': 690, 'Siddharthnagar': 691, 'Sitapur': 692, 'Sonbhadra': 693, 'Sultanpur': 694, 'Unnao': 695, 'Varanasi': 696, 'Dehradun': 697, 'Pauri Garhwal': 698, 'Chamoli': 699, 'Rudraprayag': 700, 'Tehri Garhwal': 701, 'Haridwar': 702, 'Uttarkashi': 703, 'Almora': 704, 'Udham Singh Nagar': 705, 'Pithoragarh': 706, 'Bageshwar': 707, 'Champawat': 708, 'Nainital': 709, 'Alipurduar District': 710, 'Bankura': 711, 'Basirhat HD (North 24 Parganas)': 712, 'Birbhum': 713, 'Bishnupur HD (Bankura)': 714, 'Cooch Behar': 715, 'Dakshin Dinajpur': 716, 'Darjeeling': 717, 'Diamond Harbor HD (S 24 Parganas)': 718, 'East Bardhaman': 719, 'Hoogly': 720, 'Howrah': 721, 'Jalpaiguri': 722, 'Jhargram': 723, 'Kalimpong': 724, 'Kolkata': 725, 'Malda': 726, 'Murshidabad': 727, 'Nadia': 728, 'Nandigram HD (East Medinipore)': 729, 'North 24 Parganas': 730, 'Paschim Medinipore': 731, 'Purba Medinipore': 732, 'Purulia': 733, 'Rampurhat HD (Birbhum)': 734, 'South 24 Parganas': 735, 'Uttar Dinajpur': 736, 'West Bardhaman': 737, 'Hojai': 764, 'Biswanath': 765, 'Charaideo': 766, 'Majuli': 767, 'South Salmara Mankachar': 768, 'West Karbi Anglong': 769, 'Ahmedabad Corporation': 770, 'Bhavnagar Corporation': 771, 'Gandhinagar Corporation': 772, 'Jamnagar Corporation': 773, 'Junagadh Corporation': 774, 'Rajkot Corporation': 775, 'Surat Corporation': 776, 'Vadodara Corporation': 777, 'Cheyyar': 778, 'Aranthangi': 779, 'Kovilpatti': 780, 'Ranipet': 781, 'COOCHBEHAR': 783, 'Agatti Island': 796}
+dist_start = 0
+dist_finish  = 346
 
 
 def getStates():
@@ -71,24 +28,31 @@ def getDistricts(stateID):
 
 
 def getDistrictIDs(start = dist_start,finish=dist_finish):          #start inclusive, finish excluded, 0 indexed, returns a list of district IDs sorted in the order of decreasing centers
-    # with open(os.path.join(sys.path[0], 'vaxslot/scripts/districts.txt'), "r") as f:
+    #
     # if __name__ == 'main':
     #     with open(os.path.join(sys.path[0],'districts.txt'), "r") as f:
     #         lines = f.read().splitlines()
     # else:
-    with open('/app/vaxslot/scripts/districts.txt', "r") as f:
-        lines = f.read().splitlines()
-    lines = [int(x) for x in lines]
+    #     with open(os.path.join(sys.path[0], 'vaxslot/scripts/districts.txt'), "r") as f:
+    #         lines = f.read().splitlines()
+    lines = [293, 365, 4, 264, 175, 266, 371, 285, 270, 268, 130, 485, 267, 122, 242, 382, 571, 282, 373, 289, 489, 488, 97, 274, 621, 109, 121, 288, 287, 528, 637, 225, 290, 119, 618, 118, 134, 7, 180, 292, 498, 294, 162, 563, 733, 156, 363, 131, 770, 682, 492, 14, 169, 16, 143, 103, 116, 414, 79, 725, 161, 6, 272, 112, 541, 10, 487, 183, 76, 114, 159, 691, 677, 47, 375, 622, 8, 383, 372, 246, 624, 446, 368, 632, 141, 491, 160, 735, 730, 142, 660, 230, 12, 643, 297, 86, 481, 13, 420, 303, 653, 560, 377, 392, 390, 164, 208, 692, 305, 234, 213, 127, 280, 154, 125, 542, 167, 776, 133, 669, 179, 45, 713, 209, 574, 482, 697, 173, 158, 496, 479, 9, 94, 736, 370, 337, 504, 545, 214, 249, 105, 562, 726, 90, 150, 558, 362, 170, 235, 649, 517, 96, 641, 239, 670, 447, 301, 321, 15, 284, 277, 278, 313, 577, 304, 338, 140, 291, 565, 397, 547, 681, 483, 674, 480, 704, 312, 222, 171, 384, 702, 679, 146, 705, 568, 659, 340, 540, 157, 178, 775, 619, 75, 505, 226, 520, 652, 314, 635, 629, 302, 259, 367, 5, 221, 696, 638, 149, 566, 651, 529, 777, 510, 77, 387, 92, 695, 633, 49, 495, 506, 88, 524, 572, 177, 548, 661, 227, 110, 185, 224, 657, 219, 248, 165, 623, 685, 126, 391, 499, 630, 378, 648, 662, 393, 731, 81, 561, 147, 238, 553, 60, 727, 534, 336, 712, 494, 184, 182, 729, 265, 518, 369, 263, 70, 223, 276, 634, 300, 680, 82, 351, 543, 640, 379, 271, 83, 388, 721, 617, 718, 124, 11, 260, 281, 603, 120, 626, 716, 354, 113, 781, 389, 262, 123, 552, 71, 243, 676, 556, 395, 102, 667, 296, 168, 636, 578, 442, 394, 172, 719, 148, 115, 188, 546, 89, 240, 194, 734, 647, 374, 306, 333, 502, 55, 199, 551, 327, 396, 106, 778, 539, 137, 153, 108, 316, 650, 570, 237, 85, 144, 128, 99, 569, 166, 493]
+
+    # with open('/app/vaxslot/scripts/districts.txt', "r") as f:
+    #     lines = f.read().splitlines()
+    # lines = [int(x) for x in lines]
     lines = lines[start:finish]
     return lines
 
 def deleteUser(emailID):
     # remove user from functional database
     # send bullshit liberal email
-    if emailID in user_district and emailID in db_data[user_district[emailID]]:
-        del db_data[user_district[emailID]][emailID]
-        User.query.filter_by(id=emailID).delete()
-        db.session.commit()
+    user_district =  {}
+    users = User.query.all()
+    for x in users:
+        if x.email == emailID:
+            db.session.delete(x)
+            db.session.commit()
+
 
 
 #this returns a dict indexed by state_names and for each state name, there's a list of 2 tuples.
@@ -118,3 +82,6 @@ def stateToDistrict(start=dist_start,finish=dist_finish):
 
 # print(1)
 # print(sum(len(x) for y,x in stateToDistrict().items()))
+# initialize()
+# print(districtname_to_id)
+print(getDistrictIDs())

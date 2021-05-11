@@ -1,6 +1,5 @@
 from vaxslot import app
 from vaxslot.scripts.automator import automate
-from vaxslot.scripts.db_imports_exports import initialize
 
 DEBUG = True
 PORT = 8080
