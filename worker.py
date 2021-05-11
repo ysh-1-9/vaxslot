@@ -15,6 +15,6 @@ if __name__ == '__main__':
     with Connection(conn):
         worker = Worker(map(Queue, listen))
         s = Queue(connection=conn)
-        s.enqueue(automate)
+        s.enqueue(automate,job_timeout=-1)
         # q.enqueue(automate)
         worker.work()
