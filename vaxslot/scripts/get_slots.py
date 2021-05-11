@@ -21,6 +21,7 @@ def get_slot(districtID, weeks=1):                         #all sessions with av
         slot7 = requests.get(
             'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=' + str(
                 districtID) + '&date=' + datestr,headers=header)
+        print(slot7)
         try:
             slot7=slot7.json()
         except:
@@ -28,13 +29,17 @@ def get_slot(districtID, weeks=1):                         #all sessions with av
             time.sleep(300)
             print('Awake')
             while(True):
+                print('Trying Again')
                 slot7 = requests.get(
                     'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=' + str(
                         districtID) + '&date=' + datestr, headers=header)
+                print(slot7)
                 try:
                    slot7=slot7.json()
+                   print('Started')
                    break
                 except:
+                    print('Didnt work, sleeping for 15')
                     time.sleep(15)
         # slot7_age = [x for x in slot7['centers'] if
         #              sum((1 if y['min_age_limit'] <= age else 0) for y in x['sessions']) > 0]
