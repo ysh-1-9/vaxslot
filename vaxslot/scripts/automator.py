@@ -9,6 +9,8 @@ from vaxslot.scripts.emailing import notify
 from vaxslot.scripts.models import sesh, Center, User
 from vaxslot.scripts.updateDB import updateDB
 
+# [Center ID: 650014 Date: 18-05-2021, Center ID: 561872 Date: 17-05-2021, Center ID: 561872 Date: 20-05-2021]
+
 
 def automate():
     # timesfile = open('timesfile.json','r')           #change to append
@@ -71,9 +73,10 @@ def automate():
         # file1 = open('center_counts.txt', 'w')
         # sum=0
         i = 1
-        for districtID in districts:
+        for districtID in districts:           #for districtID in districts:
             print('Updating', i, 'of',dist_finish-dist_start,'districts, districtID = ', districtID)
             sessions18,sesssions45,centers = updateDB(districtID,db_data)
+            print(centers)
             finalsessions18+=sessions18
             finalsessions45+=sesssions45
             finalcenters+=centers

@@ -41,7 +41,7 @@ def createEmail(updates, additions, centerdeets):
     s = ""
     for x in updates:
         if x.centerID in centerdeets:
-            s += "<tr>" + "<td>" + x.currCap + "</td>" + "<td>" + x.date + "</td>" + "<td>" + x.age + "</td>" + """<td width = "15%">""" + \
+            s += "<tr>" + "<td>" + str(x.currCap) + "</td>" + "<td>" + x.date + "</td>" + "<td>" + str(x.age) + "</td>" + """<td width = "15%">""" + \
                  centerdeets[x.centerID].name + "</td>" + """<td width = "45%">""" + centerdeets[
                      x.centerID].address + "</td>" + "</tr>"
         else:
@@ -49,7 +49,7 @@ def createEmail(updates, additions, centerdeets):
 
     for x in additions:
         if x.centerID in centerdeets:
-            s += "<tr>" + "<td>" + x.currCap + "</td>" + "<td>" + x.date + "</td>" + "<td>" + x.age + "</td>" + """<td width = "15%">""" + \
+            s += "<tr>" + "<td>" + str(x.currCap) + "</td>" + "<td>" + x.date + "</td>" + "<td>" + str(x.age) + "</td>" + """<td width = "15%">""" + \
                  centerdeets[x.centerID].name + "</td>" + """<td width = "45%">""" + centerdeets[
                      x.centerID].address + "</td>" + "</tr>"
         else:

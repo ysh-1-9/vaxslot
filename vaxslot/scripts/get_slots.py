@@ -52,16 +52,18 @@ def get_slot(districtID, weeks=1):                         #all sessions with av
             # else:
             #     centerdict[x['center_id']] = x
             centers.append(Center(x))
+            # print('center appended: ',centers[-1])
             for y in x['sessions']:
                 if y['available_capacity']>0:
                     if y['min_age_limit']==18:
+                        # print('Session available at ', centers[-1],' with capacity ',y['available_capacity'])
                         sessions18.append(sesh(y, districtID, x['center_id']))
                     else:
                         sessions45.append(sesh(y, districtID, x['center_id']))
 
     if len(sessions18) + len(sessions45) == 0:
         # print('No slots Available')
-        return (False, sessions18,sessions45,centers)
+        return (False, sessions18,sessions45,centers)          #these are lists of objects
     else:
         return(True,sessions18,sessions45,centers)
 
@@ -113,5 +115,5 @@ def get_slot(districtID, weeks=1):                         #all sessions with av
 # ek database will take centreID and give me center ke poore details.  - done
 
 
-
+get_slot(725)
 
