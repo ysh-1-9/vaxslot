@@ -30,6 +30,9 @@ class Center(db.Model):
         self.address = center.get('address','') + center.get('address_l','')+ ', ' + center.get('block_name','') + center.get('block_name_l','')+ ', ' + center.get('district_name','') + center.get('district_name_l','')+ ', ' + center.get('state_name','') + center.get('state_name_l','')+ ' - ' + str(center.get('pincode',''))
         self.districtID = districtname_to_id[center['district_name']]
 
+    def __repr__(self):
+        return 'Name: '+self.name+' ID: '+str(self.id)+' districtID: '+str(self.districtID)
+
 class sesh(db.Model):
     # __table_args__ = {'extend_existing': True}
     id = db.Column(db.String(50), primary_key=True)
@@ -52,3 +55,6 @@ class sesh(db.Model):
         self.districtID = districtID
         self.centerID = centerID
         self.prevCap = 0
+
+    def __repr__(self):
+        return 'Center ID: ' + str(self.centerID) + ' Date: '+self.date
