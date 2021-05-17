@@ -33,7 +33,7 @@ def notify(districtID, sessions, users, centers):
         message["From"] = sender_email
         message["To"] = 'yash@vaxslot.in'
         message['Bcc'] = recipients
-        message.attach(MIMEText(s,'plain'))
+        message.attach(MIMEText(s,'html'))
         server.send_message(message)
 
 
