@@ -76,7 +76,7 @@ def automate():
         for districtID in districts:           #for districtID in districts:
             print('Updating', i, 'of',dist_finish-dist_start,'districts, districtID = ', districtID)
             sessions18,sesssions45,centers = updateDB(districtID,db_data)
-            print(centers)
+            # print(centers)
             finalsessions18+=sessions18
             finalsessions45+=sesssions45
             finalcenters+=centers

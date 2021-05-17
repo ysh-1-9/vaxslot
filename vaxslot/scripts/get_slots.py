@@ -115,5 +115,3 @@ def get_slot(districtID, weeks=1):                         #all sessions with av
 # ek database will take centreID and give me center ke poore details.  - done
 
 
-get_slot(725)
-
