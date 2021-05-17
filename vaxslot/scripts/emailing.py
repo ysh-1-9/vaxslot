@@ -44,12 +44,16 @@ def createEmail(updates, additions, centerdeets):
             s += "<tr>" + "<td>" + x.currCap + "</td>" + "<td>" + x.date + "</td>" + "<td>" + x.age + "</td>" + """<td width = "15%">""" + \
                  centerdeets[x.centerID].name + "</td>" + """<td width = "45%">""" + centerdeets[
                      x.centerID].address + "</td>" + "</tr>"
+        else:
+            print(x.centerID, 'Not in centerdict')
 
     for x in additions:
         if x.centerID in centerdeets:
             s += "<tr>" + "<td>" + x.currCap + "</td>" + "<td>" + x.date + "</td>" + "<td>" + x.age + "</td>" + """<td width = "15%">""" + \
                  centerdeets[x.centerID].name + "</td>" + """<td width = "45%">""" + centerdeets[
                      x.centerID].address + "</td>" + "</tr>"
+        else:
+            print(x.centerID, 'Not in centerdict')
 
     return s
 

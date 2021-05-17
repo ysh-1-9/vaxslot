@@ -79,8 +79,8 @@ def automate():
             centers+=centers
             print('Done updating', i, 'of',dist_finish-dist_start,'districts, districtID = ', districtID)
             print('Sending out emails for', i, 'th district, districtID = ', districtID)
-            notify(districtID,sessions18,user_data[districtID][0],centers)             #multithreading multiproc
-            notify(districtID,sesssions45,user_data[districtID][1],centers)
+            notify(districtID,sessions18,user_data[districtID][0],db_data[districtID][2])             #multithreading multiproc
+            notify(districtID,sesssions45,user_data[districtID][1],db_data[districtID][2])
             i += 1
         sesh.query.delete()
         Center.query.delete()
