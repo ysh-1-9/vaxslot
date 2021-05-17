@@ -76,7 +76,7 @@ def automate():
             sessions18,sesssions45,centers = updateDB(districtID,db_data)
             finalsessions18+=sessions18
             finalsessions45+=sesssions45
-            centers+=centers
+            finalcenters+=centers
             print('Done updating', i, 'of',dist_finish-dist_start,'districts, districtID = ', districtID)
             print('Sending out emails for', i, 'th district, districtID = ', districtID)
             notify(districtID,sessions18,user_data[districtID][0],db_data[districtID][2])             #multithreading multiproc
