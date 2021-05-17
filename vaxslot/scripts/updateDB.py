@@ -56,9 +56,11 @@ def updateDB(districtID, db_data):
     # print(str(districtID)+': '+str(size))
     # file1.write(str(districtID)+' '+str(size)+'\n')
     for x in sessions18:
-        x.prevCap = db_data[districtID][0].get(x.id,x).prevCap
+        if x.id in db_data[districtID][0]:
+            x.prevCap = db_data[districtID][0][x.id].currCap
     for x in sessions45:
-        x.prevCap = db_data[districtID][1].get(x.id,x).prevCap
+        if x.id in db_data[districtID][1]:
+            x.prevCap = db_data[districtID][1][x.id].currCap
     db_data[districtID][0] = {x.id: x for x in sessions18}
     db_data[districtID][1] = {x.id: x for x in sessions45}
     db_data[districtID][2] = {x.id: x for x in centers}
