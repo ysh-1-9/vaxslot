@@ -14,11 +14,15 @@ def notify(districtID, sessions, users, centers):
     for x in sessions:
         if x.prevCap == 0:  # can get rid of createEmail and do what it does here only for better speed
             additions.append(x)
-        else:
+        elif x.prevCap!= x.currCap:
             updates.append(x)
     if len(updates) + len(additions) == 0:
         return
+    print('Changes to slots for district ',districtID)
+    print('Updates: ',updates)
+    print('Additions: ',additions)
     s = createEmail(updates, additions, centers)
+    print('Email: ',s)
     bcc = users.keys()
     recipients = ', '.join(bcc)
     if len(bcc) !=0:
