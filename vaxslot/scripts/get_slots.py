@@ -9,6 +9,7 @@ import datetime
 from vaxslot.scripts.db_imports_exports import header
 from vaxslot.scripts.models import Center, sesh
 
+proxies ={'http': '13.127.63.100:80', 'https': '13.127.63.100:80'}
 
 def get_slot(districtID, weeks=1):                         #all sessions with available space
     currdate = datetime.datetime.now()
@@ -20,7 +21,7 @@ def get_slot(districtID, weeks=1):                         #all sessions with av
         datestr = (currdate + datetime.timedelta(weeks=i)).strftime('%d-%m-%Y')
         slot7 = requests.get(
             'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=' + str(
-                districtID) + '&date=' + datestr,headers=header)
+                districtID) + '&date=' + datestr,headers=header, proxies = proxies)
         print(slot7)
         try:
             slot7=slot7.json()
@@ -32,7 +33,7 @@ def get_slot(districtID, weeks=1):                         #all sessions with av
                 print('Trying Again')
                 slot7 = requests.get(
                     'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=' + str(
-                        districtID) + '&date=' + datestr, headers=header)
+                        districtID) + '&date=' + datestr, headers=header, proxies = proxies)
                 print(slot7)
                 try:
                    slot7=slot7.json()

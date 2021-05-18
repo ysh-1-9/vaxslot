@@ -74,14 +74,14 @@ def automate():
         # sum=0
         i = 1
         for districtID in districts:           #for districtID in districts:
-            print('Updating', i, 'of',dist_finish-dist_start,'districts, districtID = ', districtID)
+            # print('Updating', i, 'of',dist_finish-dist_start,'districts, districtID = ', districtID)
             sessions18,sesssions45,centers = updateDB(districtID,db_data)
             # print(centers)
             finalsessions18+=sessions18
             finalsessions45+=sesssions45
             finalcenters+=centers
-            print('Done updating', i, 'of',dist_finish-dist_start,'districts, districtID = ', districtID)
-            print('Sending out emails for', i, 'th district, districtID = ', districtID)
+            # print('Done updating', i, 'of',dist_finish-dist_start,'districts, districtID = ', districtID)
+            # print('Sending out emails for', i, 'th district, districtID = ', districtID)
             notify(districtID,sessions18,user_data[districtID][0],db_data[districtID][2])             #multithreading multiproc
             notify(districtID,sesssions45,user_data[districtID][1],db_data[districtID][2])
             i += 1
