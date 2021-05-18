@@ -9,7 +9,7 @@ import datetime
 from vaxslot.scripts.db_imports_exports import header
 from vaxslot.scripts.models import Center, sesh
 
-proxies ={'http': 'http://scraperapi:46c536f3daac998550042bf01b74fdb3@proxy-server.scraperapi.com:8001'}
+proxies ={'https': '103.213.213.22:83'}
 # curl -x "http://scraperapi:46c536f3daac998550042bf01b74fdb3@proxy-server.scraperapi.com:8001" -k "http://httpbin.org/ip"
 def get_slot(districtID, weeks=1):                         #all sessions with available space
     currdate = datetime.datetime.now()
@@ -21,7 +21,7 @@ def get_slot(districtID, weeks=1):                         #all sessions with av
         datestr = (currdate + datetime.timedelta(weeks=i)).strftime('%d-%m-%Y')
         slot7 = requests.get(
             'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=' + str(
-                districtID) + '&date=' + datestr,headers=header, proxies = proxies)
+                districtID) + '&date=' + datestr,headers=header)
         print(slot7)
         try:
             slot7=slot7.json()
@@ -33,7 +33,7 @@ def get_slot(districtID, weeks=1):                         #all sessions with av
                 print('Trying Again')
                 slot7 = requests.get(
                     'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=' + str(
-                        districtID) + '&date=' + datestr, headers=header, proxies = proxies)
+                        districtID) + '&date=' + datestr, headers=header)
                 print(slot7)
                 try:
                    slot7=slot7.json()
