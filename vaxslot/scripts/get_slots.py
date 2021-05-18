@@ -9,8 +9,8 @@ import datetime
 from vaxslot.scripts.db_imports_exports import header
 from vaxslot.scripts.models import Center, sesh
 
-proxies ={'http': '13.127.63.100:80', 'https': '13.127.63.100:80'}
-
+proxies ={'http': 'http://scraperapi:46c536f3daac998550042bf01b74fdb3@proxy-server.scraperapi.com:8001'}
+# curl -x "http://scraperapi:46c536f3daac998550042bf01b74fdb3@proxy-server.scraperapi.com:8001" -k "http://httpbin.org/ip"
 def get_slot(districtID, weeks=1):                         #all sessions with available space
     currdate = datetime.datetime.now()
     enddate = currdate + datetime.timedelta(days=30)
