@@ -17,8 +17,8 @@ db = SQLAlchemy(app)
 
 
 port = 465  # For SSL
-sender_email = "vaxslottest@gmail.com"
-password = 'toHmip-myvgoq-tyhka2'
+sender_email = "vaxslot@gmail.com"
+password = 'vozpoh-pocjUb-2kowwa'
 
 # Create a secure SSL context
 context = ssl.create_default_context()
