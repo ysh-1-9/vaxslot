@@ -22,8 +22,10 @@ password = 'toHmip-myvgoq-tyhka2'
 
 # Create a secure SSL context
 context = ssl.create_default_context()
-server  = smtplib.SMTP_SSL("smtp.gmail.com", port, context=context)
+try:
+    server  = smtplib.SMTP_SSL("smtp.gmail.com", port, context=context)
+except:
+    server = smtplib.SMTP_SSL("74.125.200.109", port, context=context)
 server.login(sender_email, password)
-
 
 from vaxslot.scripts import routes
